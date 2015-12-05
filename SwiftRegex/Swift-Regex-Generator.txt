@@ -1,0 +1,118 @@
+﻿http://pastebin.com/f439dca3b
+
+' Following piece is from the constructor of the class, _dictListsRegex is a shared dictionary(of Char,String)
+    Sub New()
+        If _dictListsRegex Is Nothing Then
+            _dictListsRegex = New Generic.Dictionary(Of Char, String)
+            With _dictListsRegex
+                .Add("A", "A-Z")
+                .Add("N", "0-9")
+                .Add("C", _dictListsRegex("A") & _dictListsRegex("N"))
+                .Add("H", _dictListsRegex("N") & "ABCDEF")
+                .Add("D", _dictListsRegex("N") & ",")
+                .Add("E", " ")
+                .Add("X", _dictListsRegex("C") & "/\-?().,'+ ")
+                .Add("Z", _dictListsRegex("X") & "=:!""%&*<>;{@#_ ")
+            End With
+        End If
+    end sub
+'---------------------------------------------------------------------------------
+    ''' <summary>
+    ''' Performs a cursory check on the validity of SWIFT field data based on SWIFT field formats.
+    ''' This attempts to convert the proprietary notation used by SWIFT to standard regex to
+    ''' achieve this goal.
+    ''' SWIFT field specs can be broken into multiple lines, each line can contain 1
+    ''' or more subfield definitions.
+    ''' Square braces indicate a subfield is optional.
+    ''' Each subfield notates by a character set, fixed characters and the number
+    ''' (fixed or maximum) for each set.  For instance:
+    ''' [/14!N] would imply an optional field consisting of a slash then exactly
+    ''' 14 digits.
+    ''' 4*35X would imply up to 4 lines each containing 1 to 35 characters out
+    ''' of character set X.
+    ''' </summary>
+    ''' <param name="sSwiftFormatSpec">Field spec in SWIFT standard notation.  Pipe delimitered for lines.</param>
+    ''' <param name="sData">Contents of the field to be validated.</param>
+    ''' <returns>True if data matches spec</returns>
+    ''' <remarks>This is NOT a full data validation.  The rules about SWIFT fields are complex
+    ''' and vary frequently as notated in the guides for specific instances.  Specific checks,
+    ''' if required should be used in addition to this validation.
+    ''' </remarks>
+    Public Function FormatCheck(ByVal sSwiftFormatSpec As String, ByVal sData As String) As Boolean
+        sData = sData.ToUpper
+        sSwiftFormatSpec = sSwiftFormatSpec.ToUpper
+        'Split incoming SWIFT format specs into an array on the pipe symbol (pre-existing format)
+        Dim sFormatLines As String() = Split(sSwiftFormatSpec, "|")
+ 
+        Dim sRegexLine As String = ""
+        Dim bAllOptional As Boolean = True  'Keeps track of whether an entire line is optional
+        Dim bOptional As Boolean = False    'Keeps track of whether field is optional
+        Dim cCharacterSet As Char           'Character set for field
+        Dim sRegex As String = "\A"
+        Dim bNewLineAdded As Boolean = False
+ 
+        For Each sLine As String In sFormatLines
+            bNewLineAdded = False
+            bAllOptional = True
+            sRegexLine = ""
+ 
+            'Split each line based into fields based on location of the character set code (A,C,D,E,H,N,X or Z).
+            'These will be the last character in the set, UNLESS the field is optional in which case it will
+            'end with character set code followed by ].  There has to be a cleaner way than replacing then
+            'splitting.  Feel free to find it.
+            For Each sField As String In Split(Regex.Replace(sLine, "([ACDEHNXZ]]?)([^\]])", "$1|$2"), "|")
+ 
+                'Identify the character set
+                cCharacterSet = Regex.Match(sField, "[ACDEHNXZ]").Value
+ 
+                'Identify optional fields and flag/clean to make following steps easier.
+                If sField.StartsWith("[") Then
+                    bOptional = True
+                    sField = Replace(sField, "[", "")
+                    sField = Replace(sField, "]", "")
+                Else
+                    bAllOptional = False
+                    bOptional = False
+                End If
+ 
+                'First locate fixed field length indicated by exclamation mark and convert.
+                'e.g. 16!N becomes N{16,16}
+                sField = Regex.Replace(sField, "(\d{1,2})(!)(" & cCharacterSet & ")", "$3{$1,$1}")
+ 
+                'Next locate non fixed field length and convert.
+                'e.g. 35X becomes X{1,35}
+                sField = Regex.Replace(sField, "(\d{1,2})(" & cCharacterSet & ")", "$2{1,$1}")
+ 
+                'If field is optional then make regex optional.
+                'e.g. [35X] now becomes (X(1,35))?
+                If bOptional = True Then sField = "(" & sField & ")?"
+ 
+                'Lookup the regex conversion of acceptable characters for this SWIFT character
+                'set and replace accordingly.  
+                'e.g. 4!N is now [0-9]{4,4}
+                sField = Replace(sField, cCharacterSet, "[" & _dictListsRegex(cCharacterSet) & "]")
+ 
+                'If the field contains a line multiplier repeat the regex as required with
+                'CRLF.
+                'So if regex for 35X is Y then 4*35X becomes (Y\r\n){1,4}
+                If Regex.IsMatch(sField, "(\d{1,2})(\*)(.*)") Then
+                    sField = Regex.Replace(sField, "(\d{1,2})(\*)(.*)", "(^$3\r\n){1,$1}")
+                    bNewLineAdded = True
+                End If
+                sRegexLine += sField
+            Next
+ 
+            'Append CRLF if not already there.  This is another hack to make the regex easier.
+            If Not bNewLineAdded Then sRegexLine += "\r\n"
+ 
+            'If the entire line consists of only optional fields make the entire line optional in regex
+            If bAllOptional Then sRegexLine = "(" & sRegexLine & ")?"
+            sRegex += sRegexLine
+        Next
+        sRegex += ("\Z")
+        sData += vbCrLf
+ 
+        'Finally all fields must have some content, even if all parts are optional.  If field is blank
+        'then return false.  Otherwise return if a valid match has been found.
+        Return Not (Trim(Replace(Regex.Match(sData, sRegex, RegexOptions.Multiline).Value, vbCrLf, "")) = "")
+    End Function

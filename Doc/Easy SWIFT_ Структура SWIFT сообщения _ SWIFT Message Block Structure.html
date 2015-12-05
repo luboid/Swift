@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<!-- saved from url=(0036)http://95.158.60.152/mtstructure.jsp -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Easy SWIFT: Структура SWIFT сообщения / SWIFT Message Block Structure</title>
+		<meta name="description" content="Структура СВИФТ МТ сообщения, Структура SWIFT МТ сообщения, Структура СВИФТ сообщения, Структура SWIFT сообщения, Структура MT сообщения, Типы СВИФТ / SWIFT сообщений, Форматы СВИФТ / SWIFT полей, Fin SWIFT, MT 103, 103 SWIFT, SWIFT types, SWIFT Code, SWIFT bic">
+		<meta name="keywords" content="Структура СВИФТ МТ сообщения, Структура SWIFT МТ сообщения, Структура СВИФТ сообщения, Структура SWIFT сообщения, Структура MT сообщения, Типы СВИФТ / SWIFT сообщений, Форматы СВИФТ / SWIFT полей, Fin SWIFT, MT 103, 103 SWIFT, SWIFT types, SWIFT Code, SWIFT bic">
+        
+		<link href="http://95.158.60.152/VAADIN/themes/EasySWIFT/favicon.ico" rel="icon">
+		<link href="./Easy SWIFT_ Структура SWIFT сообщения _ SWIFT Message Block Structure_files/styles.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" async="" src="./Easy SWIFT_ Структура SWIFT сообщения _ SWIFT Message Block Structure_files/ga.js"></script><script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-36705693-1']);
+			_gaq.push(['_setDomainName', 'easyswift.net']);
+			_gaq.push(['_setAllowLinker', true]);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+    </head>
+    <body class="arial-10">
+		<table style="height: 100%; width: 100%; padding: 0px; border-spacing: 0px;" class="app-blue-color2" border="0">
+			<tbody><tr style="height: 8px">
+				<td colspan="3"></td>
+			</tr>
+			<tr style="height: 80px">
+				<td style="width: 10%; vertical-align: bottom; text-align: left; padding-left: 20px">
+					<a href="http://95.158.60.152/" title="Easy SWIFT, СВИФТ"><img style="border: none" src="./Easy SWIFT_ Структура SWIFT сообщения _ SWIFT Message Block Structure_files/easy_swift.png"></a>
+				</td>
+				<td style="width: 80%; vertical-align: middle; text-align: right">
+					<span style="white-space: nowrap; vertical-align: middle" class="arial-15-bold cursor-pointer app-white-color">
+						<img src="./Easy SWIFT_ Структура SWIFT сообщения _ SWIFT Message Block Structure_files/terms.png" title="Структура SWIFT / СВИФТ сообщения">&nbsp;&nbsp;структура SWIFT сообщения
+					</span>
+				</td>
+				<td style="width: 10%"></td>
+			</tr>
+			<tr style="text-align: center">
+				<td colspan="3" style="width: 100%; background-color: white; vertical-align: top">
+					<table style="height: 100%; width: 100%; padding: 0px; border-spacing: 0px;" class="helvetica-12" border="0">
+						<tbody><tr><td style="height: 20px"></td></tr>
+						<tr>
+							<td style="width: 15%"></td>
+							<td style="width: 70%; text-align: left; vertical-align: top">
+								<h2 class="arial-16-bold app-blue-color4">SWIFT Message Block Structure</h2>
+								<p>SWIFT Financial Application (FIN) message has the following structure:
+								</p><p class="app-tomato-color arial-10-bold">{1: <em>Basic Header Block</em>} {2: <em>Application Header
+										Block</em>} {3: <em>User Header Block</em>} {4: <em>Text Block
+										or body</em>} {5: <em>Trailer Block</em>}
+								</p><p>These five SWIFT message blocks include header information, the body of the
+									message, and a trailer. All blocks have the same basic format:
+								</p><p class="app-tomato-color arial-10-bold"><tt>{</tt><em>n</em><tt>:...}</tt>
+					</p><p>The curly braces (<tt>{}</tt>) indicate the beginning and end of a
+				block. <em>n </em>is the block identifier, in this case a single
+				integer between 1 and 5. Each block identifier is associated with a
+				particular part of the message. There is no carriage return or line
+				feed (<tt>CRLF</tt>) between blocks.
+			</p><p>Blocks 3, 4, and 5 may contain sub-blocks or fields delimited by field
+			tags. Block 3 is optional. Many applications, however, populate
+			block 3 with a reference number so that when SWIFT returns the
+			acknowledgment, it can be used for reconciliation purposes. 
+		</p><dl><dt><strong>Note:</strong></dt><dd>For further information on SWIFT message blocks, see Chapter 2 of the
+				<cite>SWIFT User Handbook FIN System Messages Document</cite>.
+			</dd></dl><br>
+		<p></p><h3 class="app-tomato-color">{1: Basic Header Block}</h3>
+		<p>The basic header block is fixed-length and continuous with no field
+			delimiters. It has the following format:
+		</p><pre class="app-light-blue-background padding margin">{1:    F    01   BANKBEBB   2222   123456}
+(a)   (b)  (c)     (d)      (e)      (f)
+		</pre>
+		<dl>
+			<p></p><dt class="app-tomato-color arial-10-bold">a) 
+			</dt><dd><tt>1:</tt> = Block ID (always <tt>1</tt>)
+			</dd><p></p><dt class="app-tomato-color arial-10-bold">b) 
+			</dt><dd>Application ID as follows: 
+				<ul>
+					<li><tt>F</tt> = FIN (financial application)
+				</li><li><tt>A</tt> = GPA (general purpose application)
+		</li><li><tt>L</tt> = GPA (for logins, and so on)
+	</li></ul>
+</dd><p></p><dt class="app-tomato-color arial-10-bold">c) 
+</dt><dd>Service ID as follows: 
+	<ul>
+		<li><tt>01</tt> = FIN/GPA
+	</li><li><tt>21</tt> = ACK/NAK
+</li></ul>
+</dd><p></p><dt class="app-tomato-color arial-10-bold">d) 
+</dt><dd>BANKBEBB = Logical terminal (LT) address. It is fixed at 12
+	characters; it must not have <tt>X</tt> in position 9.
+</dd><p></p><dt class="app-tomato-color arial-10-bold">e) 
+</dt><dd><tt>2222</tt> = Session number. It is generated by the user's
+computer and is padded with zeros.
+</dd><p></p><dt class="app-tomato-color arial-10-bold">f) 
+</dt><dd><tt>123456 </tt>= Sequence number that is generated by the user's
+computer. It is padded with zeros.
+</dd></dl><br>
+<p></p><h3 class="app-tomato-color">{2: Application Header Block}</h3>
+<p>There are two types of application headers: Input and Output.
+	Both are fixed-length and continuous with no field delimiters.
+</p><p>The input (to SWIFT) structure is as follows:
+</p><pre class="app-light-blue-background padding margin">{2:    I     100    BANKDEFFXXXX    U       3       003}
+(a)   (b)    (c)      (d)          (e)     (f)      (g)
+</pre>
+<dl>
+	<p></p><dt class="app-tomato-color arial-10-bold">a)
+	</dt><dd><tt>2:</tt> = Block ID (always <tt>2</tt>)
+	</dd><p></p><dt class="app-tomato-color arial-10-bold">b) 
+	</dt><dd><tt>I</tt> = Input
+	</dd><p></p><dt class="app-tomato-color arial-10-bold">c) 
+	</dt><dd><tt>100</tt> = Message type
+	</dd><p></p><dt class="app-tomato-color arial-10-bold">d) 
+	</dt><dd><tt>BANKDEFFXXXX</tt> = Receiver's address with<tt> X</tt> in
+	position 9/ It is padded with <tt>X</tt>s if no branch is required.
+	</dd><p></p><dt class="app-tomato-color arial-10-bold">e) 
+	</dt><dd><tt>U</tt> = the message priority as follows: 
+	<ul>
+		<li><tt>S</tt> = System
+	</li><li><tt>N</tt> = Normal
+</li><li><tt>U</tt> = Urgent
+</li></ul>
+</dd><p></p><dt class="app-tomato-color arial-10-bold">f) 
+</dt><dd><tt>3</tt> = Delivery monitoring field is as follows: 
+<ul>
+	<li><tt>1</tt> = Non delivery warning (MT010)
+</li><li><tt>2</tt> = Delivery notification (MT011)
+</li><li><tt>3</tt> = Both valid = U1 or U3, N2 or N
+</li></ul>
+</dd><p></p><dt class="app-tomato-color arial-10-bold">g) 
+</dt><dd><tt>003</tt> = Obsolescence period. It specifies when a
+non-delivery notification is generated as follows: 
+<ul>
+	<li>Valid for <tt>U</tt> = <tt>003</tt> (15 minutes)
+</li><li>Valid for <tt>N</tt> = <tt>020</tt> (100 minutes)
+</li></ul>
+</dd></dl>
+<p>The output (from SWIFT) structure is as follows: 
+	<br>
+</p><pre class="app-light-blue-background padding margin">{2:   O      100   1200   970103BANKBEBBAXXX2222123456   970103  1201   N}
+(a)  (b)      (c)   (d)           (e)                      (f)    (g)   (h)
+</pre>
+<p>
+</p><dl>
+	<p></p><dt class="app-tomato-color arial-10-bold">a) 
+	</dt><dd><tt>2:</tt> = Block ID (always <tt>2</tt>)
+	</dd><p></p><dt class="app-tomato-color arial-10-bold">b) 
+	</dt><dd><tt>O</tt> = Output
+	</dd><p></p><dt class="app-tomato-color arial-10-bold">c) 
+	</dt><dd><tt>100</tt> = Message type
+	</dd><p></p><dt class="app-tomato-color arial-10-bold">d) 
+	</dt><dd><tt>1200</tt> = Input time with respect to the sender
+	</dd><p></p><dt class="app-tomato-color arial-10-bold">e) 
+	</dt><dd>The Message Input Reference (MIR), including input date, with Sender's
+		address
+	</dd><p></p><dt class="app-tomato-color arial-10-bold">f) 
+	</dt><dd><tt>970103</tt> = Output date with respect to Receiver
+	</dd><p></p><dt class="app-tomato-color arial-10-bold">g) 
+	</dt><dd><tt>1201</tt> = Output time with respect to Receiver
+	</dd><p></p><dt class="app-tomato-color arial-10-bold">h) 
+	</dt><dd><tt>N</tt> = Message priority as follows: 
+	<ul>
+		<li><tt>S</tt> = System
+	</li><li><tt>N</tt> = Normal
+</li><li><tt>U</tt> = Urgent
+</li></ul>
+</dd></dl><br>
+<p></p><h3 class="app-tomato-color">{3: User Header Block}</h3>
+<p>This is an optional block and has the following structure:
+</p><pre class="app-light-blue-background padding margin">{3:  {113:xxxx}  {108:abcdefgh12345678}     }
+(a)      (b)             ( c)
+</pre>
+<dl>
+	<p></p><dt class="app-tomato-color arial-10-bold">a) 
+	</dt><dd><tt>3</tt>: = Block ID (always <tt>3</tt>)
+	</dd><p></p><dt class="app-tomato-color arial-10-bold">b) 
+	</dt><dd><tt>113:xxxx</tt> = Optional banking priority code
+	</dd><p></p><dt class="app-tomato-color arial-10-bold">c) 
+	</dt><dd>This is the Message User Reference (MUR) used by applications for
+		reconciliation with ACK.
+	</dd></dl>
+<dl><dt><strong>Note:</strong></dt><dd>Other tags exist for this block. They include tags (such as
+	<tt>119</tt>, which can contain the code ISITC on an MT521) that may force
+	additional code word and formatting rules to validate the body of the message
+	as laid down by ISITC (Industry Standardization for Institutional Trade
+	Communication). For further information, see <cite>All Things
+		SWIFT: the SWIFT User Handbook</cite>.
+	</dd></dl><br>
+<p></p><h3 class="app-tomato-color">{4: Text Block or body}</h3>
+<p>This block is where the actual message content is specified and is what
+	most users see. Generally the other blocks are stripped off before
+	presentation. The format, which is variable length and requires use of
+	CRLF as a field delimiter, is as follows: 
+</p><pre class="app-light-blue-background padding margin">{4:CRLF
+:20:PAYREFTB54302 CRLF
+:32A:970103BEF1000000,CRLF
+:50:CUSTOMER NAME CRLF
+AND ADDRESS CRLF
+:59:/123-456-789 CRLF
+BENEFICIARY NAME CRLF
+AND ADDRESS CRLF
+-}
+</pre>
+<p>The symbol <tt>CRLF</tt> is a mandatory delimiter in block 4.
+</p><p>The example above is of type MT100 (Customer Transfer) with only the
+mandatory fields completed. It is an example of the format of an ISO
+7775 message structure. Block 4 fields must be in the order specified
+for the message type in the appropriate volume of the <cite>SWIFT User
+	Handbook</cite>.
+</p><p>The content of the text block is a collection of fields. Sometimes, the fields are logically grouped into
+	sequences. Sequences can be mandatory or optional, and can
+	repeat. Sequences also can be divided into subsequences. In
+	addition, single fields and groups of consecutive fields can repeat.
+	For example, sequences such as those in the SWIFT Tags 16R and 16S may have
+	beginning and ending fields. Other sequences, such as Tag 15, have only
+	a beginning field. In yet other message types, no specific tags mark
+	the start or end of a field sequence.
+</p><p>The format of block 4 field tags is:
+</p><p><tt>:</tt><em>nna</em><tt>:</tt>
+</p><p><em>nn</em> = Numbers
+</p><p><em>a</em> = Optional letter, which may be present on selected tags
+</p><p>For example:
+</p><p><tt>:20:</tt> = Transaction reference number
+</p><p><tt>:58A:</tt> = Beneficiary bank
+</p><p>The length of a field is as follows:
+</p><p><em>nn</em> = Maximum length
+</p><p><em>nn</em><tt>!</tt> = Fixed-length
+</p><p><em>nn</em><tt>-</tt><em>nn</em> = Minimum and maximum length
+</p><p><em>nn</em> <tt>*</tt> <em>nn</em> = Maimum number of lines times
+maximum line length
+</p><p>The format of the data is as follows:
+</p><p><em>n </em>= Digits
+</p><p><em>d</em> = Digits with decimal comma
+</p><p><em>h</em> = Uppercase hexadecimal
+</p><p><em>a</em> = Uppercase letters
+</p><p><em>c</em> = Uppercase alphanumeric
+</p><p><em>e</em> = Space
+</p><p><em>x</em> = SWIFT character set
+</p><p><em>y</em> = Uppercase level A ISO 9735 characters
+</p><p><em>z</em> = SWIFT extended character set
+</p><p>Some fields are defined as optional. If optional fields are not
+	required in a specific message, do not include them because blank fields are
+	not allowed in the message.
+</p><p><tt>/,word</tt> = Characters "as is"
+</p><p><tt>[...] </tt> = Brackets indicate an optional
+element
+</p><p>For example: 
+</p><dl>
+	<p></p><dt><tt>4!c[/30x] </tt>
+	</dt><dd>This is a fixed 4 uppercase alphanumeric, optionally followed by a slash
+		and up to 30 SWIFT characters.
+	</dd><p></p><dt><tt>ISIN1!e12!c </tt>
+	</dt><dd>This is a code word followed by a space and a 12 fixed uppercase
+		alphanumeric.
+	</dd></dl>
+<p>
+</p><dl><dt><strong>Note:</strong></dt><dd>In some message types, certain fields are defined as conditional. For
+		example, when a certain field is present, another field may change from
+		optional to mandatory or forbidden. Certain fields may contain
+		sub-fields, in which case there is no <tt>CRLF</tt> between them.
+	Validation is not supported.
+	</dd></dl>
+<p>Certain fields have different formats that depend on the option that is
+	chosen. The option is designated by a letter after the tag number, for
+	example: 
+</p><dl>
+	<p></p><dt>:32A:000718GBP1000000,00 
+	</dt><dd>Value Date, ISO Currency, and Amount
+	</dd><p></p><dt>:32B:GBP1000000,00 
+	</dt><dd>ISO Currency and Amount
+	</dd></dl>
+<p>
+</p><dl><dt><strong>Note:</strong></dt><dd>The SWIFT standards for amount formats are: no thousand separators are
+		allowed (10,000 is not allowed, but 10000 is allowed); use a comma (not a
+		decimal point) for a decimal separator (1000,45 = one thousand and forty-five
+		hundredths).
+	</dd></dl> 
+<dl>
+	<p></p><dt><tt>:58A:NWBKGB2L</tt> 
+	</dt><dd>Beneficiary SWIFT address
+	</dd><p></p><dt><tt>:58D:NatWest</tt> <tt>Bank</tt>
+	</dt><dd>Beneficiary full name and address
+	</dd></dl>
+<p>
+</p><pre class="app-light-blue-background padding margin">Head Office
+ 
+London
+</pre><br>
+<p></p><h3 class="app-tomato-color">{5: Trailer Block}</h3>
+<p>A message always ends in a trailer with the following format:
+</p><p><tt>{5: {MAC:12345678}{CHK:123456789ABC}</tt>
+</p><p>This block is for SWIFT system use and contains a number of fields that are
+denoted by keywords such as the following: 
+</p><dl>
+	<p></p><dt>MAC
+	</dt><dd>Message Authentication Code calculated based on the entire contents of the
+		message using a key that has been exchanged with the destination and a secret
+		algorithm. Found on message categories 1,2,4,5,7,8, most 6s and
+		304.
+	</dd><p></p><dt>CHK
+	</dt><dd>Checksum calculated for all message types.
+	</dd><p></p><dt>PDE
+	</dt><dd>Possible Duplicate Emission added if user thinks the same message was sent
+		previously
+	</dd><p></p><dt>DLM
+	</dt><dd>Added by SWIFT if an urgent message (<tt>U</tt>) has not been delivered
+	within 15 minutes, or a normal message (<tt>N</tt>) within 100
+	minutes.
+	</dd></dl><br><br>
+</td>
+<td style="width: 15%"></td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+<tr>
+	<td colspan="3" style="height: 60px; text-align: center" class="arial-10-bold cursor-pointer">
+		<a href="http://95.158.60.152/" style="text-decoration: none"><span class="app-white-color">Главная</span></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+		<a href="http://95.158.60.152/products.jsp" style="text-decoration: none"><span class="app-white-color">Продукты</span></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+		<a href="http://95.158.60.152/support.jsp" style="text-decoration: none"><span class="app-white-color">Поддержка</span></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+		<a href="http://95.158.60.152/terms.jsp" style="text-decoration: none"><span class="app-white-color">Условия Использования</span></a>
+	</td>
+</tr>
+</tbody></table>
+
+
+</body></html>

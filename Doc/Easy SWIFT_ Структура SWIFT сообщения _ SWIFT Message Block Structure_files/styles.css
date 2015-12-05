@@ -1,0 +1,539 @@
+/* 
+    Document   : styles
+    Created on : Aug 6, 2012, 10:17:09 AM
+    Author     : Mekhman Shakhverdiyev
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+@import url(../reindeermods/styles.css);
+
+html, body {
+	margin: 0;
+	height: 100%;
+	width: 100%;
+}
+
+root { 
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
+
+.padding {
+	padding: 20px;
+}
+
+.margin {
+	margin: 20px;
+}
+
+.padding-top-bottom {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.app-blue-color1 {
+	background-color: #CFDCF0;
+}
+
+.app-blue-color2 {
+	background-color: #4993CD;
+}
+
+.app-blue-color3 {
+	background-color: #7f9db9;
+}
+
+.app-blue-color4 {
+	color: #4993CD;
+}
+
+.app-tomato-color {
+	color: tomato;
+}
+
+.app-light-yellow-color {
+	color: #FFFFC0;
+}
+
+.app-white-color {
+	color: white;
+}
+
+.app-silver-color {
+	color: silver;
+}
+
+.app-gray-color {
+	color: gray;
+}
+
+.app-light-gray-color {
+	color: #707070;
+}
+
+.app-light-blue-background {
+	background-color: #CEE6FC;
+}
+
+.app-brown-color {
+	color: #C97575;
+}
+
+.app-black-color {
+	color: black;
+}
+
+.verdana-8 {
+    font: normal 8pt Verdana,Arial,Helvetica,sans-serif;
+}
+
+.verdana-8-bold {
+	font: bold 8pt Verdana, Arial, Helvetica, sans-serif;
+}
+
+.verdana-9 {
+	font: normal 9pt Verdana, Arial, Helvetica, sans-serif;
+}
+
+.verdana-10-bold {
+	font: bold 10pt Verdana, Arial, Helvetica, sans-serif;
+}
+
+.helvetica-12 {
+	font: normal 12px Helvetica, Arial, Helvetica, sans-serif;
+}
+
+.helvetica-12-bold {
+	font: bold 13px Helvetica, Arial, Helvetica, sans-serif;
+}
+
+.impact-10 {
+	font: normal 10pt Impact, Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.impact-20 {
+	font: normal 20pt Impact, Verdana, Arial, Helvetica, sans-serif;
+}
+
+.arial-10 {
+    font: normal 9pt Arial, Tahoma, Helvetica, sans-serif;
+}
+
+.arial-10-bold {
+	font: bold 10pt Arial, Tahoma, Helvetica, sans-serif;
+}
+
+.arial-15-bold {
+	font: bold 15pt Arial, Tahoma, Helvetica, sans-serif;
+}
+
+.arial-16-bold {
+	font: bold 16pt Arial, Tahoma, Helvetica, sans-serif;
+}
+
+.monospace-font {
+    font: normal 8pt monospace,"New Courier";
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+.ul-style {
+	text-align: left;
+	line-height: 20px;
+	padding-top: 7px
+}
+
+.category-layout {
+	background-color: #CEE6FC;
+	margin-bottom: 20px;
+	-webkit-box-shadow: 4px 4px 8px 1px #CFDCF0;
+	-moz-box-shadow: 4px 4px 8px 1px #CFDCF0;
+	box-shadow: 4px 4px 8px 1px #CFDCF0;
+}
+
+.dotted-layout {
+	border: 1px dotted #B3B3B3;
+	word-wrap: break-word;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-box-shadow: 4px 4px 8px 1px #CFDCF0;
+	-moz-box-shadow: 4px 4px 8px 1px #CFDCF0;
+	box-shadow: 4px 4px 8px 1px #CFDCF0;
+}
+
+.stylish-background {
+	background-color: #B4D2A4;
+	color: #404040;
+	background-image: url(images/grad-light-top.png);
+	background-repeat: repeat-x;
+	background-position: 0 -1px;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	margin: 1px 0;
+	font: bold 8pt Verdana,Arial,Helvetica,sans-serif;
+	line-height: 1.2;
+	border: 1px solid #B3B3B3;
+}
+
+.container {
+    border: 1px solid #888;
+    background-color: #DDDDDD;
+    overflow: auto;
+	color: black;
+}
+
+.text-error {
+    border-color: red;
+    background-color: #FFC0C0;
+}
+
+.img-container {
+    border: 1px solid gray;
+	-webkit-box-shadow: 4px 4px 8px 1px #5F75B9;
+	-moz-box-shadow: 4px 4px 8px 1px #5F75B9;
+	box-shadow: 4px 4px 8px 1px #5F75B9;
+}
+
+.info-container {
+    border: 1px solid silver;
+	-webkit-box-shadow: 4px 4px 8px 1px #CFDCF0;
+	-moz-box-shadow: 4px 4px 8px 1px #CFDCF0;
+	box-shadow: 4px 4px 8px 1px #CFDCF0;
+	background: white;
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=white, endColorstr=aliceblue)"; 
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="white", endColorstr="aliceblue");
+	background-image: -webkit-gradient(linear, 0 0%, 0 100%, from(white), to(aliceblue));
+	background-position: initial initial;
+	background-repeat: initial initial;
+	background: -moz-linear-gradient(center top , rgb(255, 255, 255), rgb(240, 248, 255)) repeat scroll 0% 0% transparent;
+	background-image: -ms-linear-gradient(top, white 0%, aliceblue 100%);
+}
+
+.gradient-container {
+	background: white;
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=white, endColorstr=#C9DFFB)"; 
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="white", endColorstr="#C9DFFB");
+	background-image: -webkit-gradient(linear, 0 0%, 0 100%, from(white), to(#C9DFFB));
+	background-position: initial initial;
+	background-repeat: initial initial;
+	background: -moz-linear-gradient(center top , rgb(255, 255, 255), rgb(201, 223, 251)) repeat scroll 0% 0% transparent;
+	background-image: -ms-linear-gradient(top, white 0%, aliceblue 100%);
+}
+
+.gradient-container2 {
+	background: white;
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#C9DFFB, endColorstr=white)"; 
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#C9DFFB", endColorstr="white");
+	background-image: -webkit-gradient(linear, 0 0%, 0 100%, from(#C9DFFB), to(white));
+	background-position: initial initial;
+	background-repeat: initial initial;
+	background: -moz-linear-gradient(center top , rgb(201, 223, 251), rgb(255, 255, 255)) repeat scroll 0% 0% transparent;
+	background-image: -ms-linear-gradient(top, white 0%, aliceblue 100%);
+}
+
+.info-container-header {
+	padding-top: 5px;
+	padding-bottom: 8px;
+	padding-left: 25px;
+	padding-right: 25px;
+	background-color: #4993CD;
+	color: white;
+}
+
+.my-account-container {
+	padding-top: 0px;
+	padding-bottom: 10px;
+	padding-left: 25px;
+	padding-right: 25px;
+    border: 1px solid silver;
+	background-color: #1E3257;
+	color: silver;
+	-webkit-border-bottom-right-radius: 8px;
+	-webkit-border-bottom-left-radius: 8px;
+	-webkit-box-shadow: 2px 3px 6px 0px navy;
+
+	-moz-border-radius-bottomright: 8px;
+	-moz-border-radius-bottomleft: 8px;
+	-moz-box-shadow: 2px 3px 6px 0px navy;
+
+	border-bottom-right-radius: 8px;
+	border-bottom-left-radius: 8px;
+	box-shadow: 2px 3px 6px 0px navy;
+}
+
+.blue-button:hover {
+	white-space:nowrap;
+	background: #2988D1;
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#5AB5EE, endColorstr=#2988D1)"; 
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#5AB5EE", endColorstr="#2988D1");
+	background-image: -webkit-gradient(linear, 0 0%, 0 100%, from(#5AB5EE), to(#2988D1));
+	background-position: initial initial;
+	background-repeat: initial initial;
+	background: -moz-linear-gradient(center top , rgb(90, 181, 238), rgb(41, 136, 209)) repeat scroll 0% 0% transparent;
+	background-image: -ms-linear-gradient(top, #5AB5EE 0%, #2988D1 100%);
+	border-top: 1px #0070CC solid;
+	border-right: 1px #006AC1 solid;
+	border-bottom: 1px #005CA6 solid;
+	border-left: 1px #006AC1 solid;
+	-moz-box-shadow: 0 1px 1px rgba(0,0,0,0.3),inset 0 0 3px #35bff4;
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3),inset 0 0 3px #35BFF4;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3),inset 0 0 3px #35BFF4;
+}
+
+.blue-button:active {
+	white-space:nowrap;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#2180ce", endColorstr="#33a0e8");
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#2180ce, endColorstr=#33a0e8)"; 
+	background-image: -webkit-gradient(linear, 0 0%, 0 100%, from(#2180CE), to(#33A0E8));
+	background-position: initial initial;
+	background-repeat: initial initial;
+	background: -moz-linear-gradient(center top , rgb(33, 128, 206), rgb(51, 160, 232)) repeat scroll 0% 0% transparent;
+	background-image: -ms-linear-gradient(top, #2180CE 0%, #33A0E8 100%);
+	border-top: 1px #0070CC solid;
+	border-right: 1px #006AC1 solid;
+	border-bottom: 1px #005CA6 solid;
+	border-left: 1px #006AC1 solid;
+	-moz-box-shadow: 0 1px 1px rgba(0,0,0,0.3),inset 0 0 3px #35bff4;
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3),inset 0 0 3px #35BFF4;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3),inset 0 0 3px #35BFF4;
+}
+
+.blue-button {
+	white-space:nowrap;
+	color: white;
+	border-top: 1px #2270AB solid;
+	border-right: 1px #18639A solid;
+	border-bottom: 1px #0F568B solid;
+	border-left: 1px #18639A solid;
+	background: #2180CE;
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#33a0e8, endColorstr=#2180ce)"; 
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#33a0e8", endColorstr="#2180ce");
+	background-image: -webkit-gradient(linear, 0 0%, 0 100%, from(#33A0E8), to(#2180CE));
+	background-position: initial initial;
+	background-repeat: initial initial;
+	background: -moz-linear-gradient(center top , rgb(51, 160, 232), rgb(33, 128, 206)) repeat scroll 0% 0% transparent;
+	background-image: -ms-linear-gradient(top, #33A0E8 0%, #2180CE 100%);
+	text-shadow: #355782 0 1px 2px;
+	-webkit-text-shadow: #355782 0 1px 2px;
+	-moz-text-shadow: #355782 0 1px 2px;
+	-moz-box-shadow: 0 1px 1px rgba(0,0,0,0.3),inset 0px 1px 0px #83c5f1;
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3),inset 0px 1px 0px #83C5F1;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3),inset 0px 1px 0px #83C5F1;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-o-border-radius: 3px;
+	border-radius: 3px;
+	text-align: center;
+	cursor: pointer;
+	overflow: visible;
+	outline: none;
+	font-family: "Helvetica", "Calibri", "Corbel Bold", "Segoe UI", "Impact";
+	font-weight: normal;
+	text-decoration: none;
+}
+
+/*
+--------------------------------------------------------------------
+--                                                                --
+--   VAADIN style overrides.                                      --
+--                                                                --
+--------------------------------------------------------------------
+*/
+
+.v-link a:hover span {
+	color: white;
+}
+
+.v-link a:visited span {
+	color: white;
+}
+
+.v-link a:link span {
+	color: white;
+}
+
+.v-link span {
+	text-decoration: none;
+	vertical-align: middle;
+}
+
+.v-gridlayout-margin-top {
+	padding-top: 15px;
+}
+
+.v-gridlayout-margin-bottom {
+	padding-bottom: 15px;
+}
+
+.v-gridlayout-margin-right {
+	padding-right: 15px;
+}
+
+.v-gridlayout-margin-left {
+	padding-left: 15px;
+}
+
+.v-panel-content > div{
+    background-color: #F5FAFF;
+}
+
+.v-panel-caption {
+	border: none;
+	background-color: #556CB8;
+	background-image: url(images/grad-light-top.png);
+	background-repeat: repeat-x;
+	background-position: 0 -1px;
+	color: white;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	margin: 1px 0;
+	font: bold 8pt Verdana,Arial,Helvetica,sans-serif;
+	line-height: 1.2;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 15px;
+}
+
+.v-panel .v-panel-captionwrap {
+	border: 1px solid #DCDCDC;
+	border-bottom: none;
+	background: #F5FAFF;
+	padding: 1px 2px;
+	overflow: hidden;
+}
+
+.v-panel-caption:hover {
+	background-color: #058CFF;
+	color:white;
+}
+
+.v-app textarea.v-textarea {
+	padding-top: 18px;
+	padding-left: 18px;
+	padding-bottom: 18px;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	font: normal 8pt monospace;
+	background-color: white;
+	-webkit-box-shadow: 4px 4px 8px 1px #CFDCF0;
+	-moz-box-shadow: 4px 4px 8px 1px #CFDCF0;
+	box-shadow: 4px 4px 8px 1px #CFDCF0;
+	margin-bottom: 20px;
+}
+
+.v-window-header {
+	font-size: 11px;
+	font-weight: bold;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+}
+
+.v-button-caption {
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+}
+
+.v-table-footer-container {
+	font: bold 8pt Verdana,Arial,Helvetica,sans-serif;
+	text-align: left;
+}
+
+.v-table-caption-container {
+	font: bold 8pt Verdana,Arial,Helvetica,sans-serif;
+}
+
+.v-table-header {
+	text-transform: none !important;
+}
+
+.v-Notification {
+    color: white;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    font-size: 100%;
+    background: #70BC04;
+    font-weight: bold;
+}
+
+.v-Notification-warning {
+    background: #70BC04;
+	border-color: #70BC04;
+}
+
+.v-Notification-error {
+    background: #b40000 url(images/error-close.png) no-repeat right top;
+    border: 3px solid #ca3030;
+}
+
+.v-button-link .v-button-caption {
+	font-family: Arial,Helvetica,sans-serif;
+    text-decoration: none;
+}
+
+.v-button-link:hover .v-button-caption:hover {
+	color: #058CFF;
+    text-decoration: underline;
+}
+
+.v-formlayout-captioncell .v-caption {
+    overflow: visible;
+    text-align: left;
+    min-width: 100px;
+}
+
+/* Loading indicator states
+ * Note: client side expects that loading indicator has a height. It depends on
+ * this css property to ensure browsers have applied all required styles.
+*/
+
+.v-loading-indicator-delay {
+    background-image: url(../base/common/img/loading-indicator-delay.gif);
+}
+
+.v-loading-indicator-wait {
+    background-image: url(../base/common/img/loading-indicator-wait.gif);
+}
+
+.v-loading-indicator-wait, .v-loading-indicator-delay, .v-loading-indicator {
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: wait;
+    background-color: #cccccc;
+    opacity: 0.6;
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=60);
+    margin: 0px !important;
+}
+
+.new_user_form .v-formlayout-margin-top .v-formlayout-firstrow .v-formlayout-captioncell, .new_user_form .v-formlayout-margin-top .v-formlayout-firstrow .v-formlayout-contentcell, .new_user_form .v-formlayout-margin-top .v-formlayout-firstrow .v-formlayout-errorcell {
+    padding-top: 0px;
+}
+
+/* Lay the options horizontally */
+.v-select-optiongroup-horizontal .v-select-option {
+    display: inline-block;
+}
+/* Avoid wrapping if the layout is too tight */
+.v-select-optiongroup-horizontal {
+    white-space: nowrap;
+}
+/* Some extra spacing is needed */
+.v-select-optiongroup-horizontal .v-select-option.v-radiobutton {
+    padding-right: 10px;
+}
+
+.v-captiontext {
+	padding-bottom: 2px;
+	font: bold 8pt Verdana,Arial,Helvetica,sans-serif;
+}

@@ -1,0 +1,32 @@
+{1:F21SOMEBANKAXXX1986850704}{4:{177:1511020826}{451:0}}{1:F01SOMEBANKAXXX1986850704}{2:O1030351151102SENDERSXBXXX02467244891511020826N}{3:{103:TGT}{113:NYNN}{108:1510300035526-06}{115:070146070146DE0000000653977094}{119:STP}}{4:
+:20:151030035526
+:23B:CRED
+:32A:151102EUR135,
+:33B:EUR135,
+:50F:/FR343409549895438945098548
+1/SOME NAME
+2/SOME ADDRESS
+3/FR/PARIS
+7/FR/1231532472
+:52A:ABCDFGHK123
+:59:/AU351234567800123456789
+FIRM LTD
+:71A:OUR
+-}{5:{MAC:00000000}{PAC:00000000}{CHK:447B8E8D50A7}{DLM:}}{S:{SAC:}{FAC:}{COP:P}}                                                                                                                                                                                                                                                                                                                                                                                                                                                        {1:F21SOMEBANKAXXX1986850698}{4:{177:1511020826}{451:0}}{1:F01SOMEBANKAXXX1986850698}{2:O1031723151029SENDERSBAXXX82840742671511020826N}{3:{103:TGT}{115:070040070040BG0000000653563737}}{4:
+:20:C55612
+:23B:CRED
+:32A:151102EUR31000,
+:33B:EUR31000,
+:50K:/LT38453844626873682787
+SOME NAME 2
+SOME ADDRESS 2
+SOME ADDRESS 3
+:57A:SOMEBANK
+:59:/LT74987347359876398765
+FIRM 2 LTD
+FIRM 2 ADDRESS
+:70:REASON PARt 1
+REASON PARt 2
+REASON PARt 3
+:71A:SHA
+-}{5:{MAC:00000000}{PAC:00000000}{CHK:E004EB4127EC}{DLM:}}{S:{SAC:}{FAC:}{COP:P}}                                                                                                                                                                                                                                                                                                                                                                                                                                      
