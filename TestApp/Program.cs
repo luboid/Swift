@@ -25,7 +25,7 @@ namespace TestApp
 
         static void Process()
         {
-            Swift.Section section; InvalidBlock[] invalidBlocks; GenericMessage message;
+            Swift.Section section;
             using (var r = Swift.Reader.Create("examples\\0060692808311101.tgt"))
             {
                 while ((section = r.Read()) != null)
@@ -33,22 +33,18 @@ namespace TestApp
                     Console.WriteLine("-".PadLeft(30, '-'));
                     PrintSwift(section);
 
-                    if (GenericMessage.Create(section, out message, out invalidBlocks))
-                    {
-                        var text = message.OfType<TextBlock>().First();
-                        var fields = text.OfType<Field>().ToList();
-                        var amount = fields.Where(f => f.Id == "32A").First();
-                        Console.WriteLine(string.Format("Amount:{0}", SwiftUtil.ToDecimal(amount.Value)));
-                        Console.WriteLine(string.Format("Currency:{0}", amount["Currency"]));
-                        Console.WriteLine(string.Format("ValueDate:{0}", SwiftUtil.ToDateTime(amount["ValueDate"])));
-                        // do some thining
-                    }
-                    else
-                    {
-                        foreach (var b in invalidBlocks)
-                            foreach (var m in b.Messages)
-                                Console.WriteLine(m);
-                    }
+                    var m = GenericMessage.Create(section);
+
+                    var f = m.Text.SwiftFirst("32A");
+
+                    Console.WriteLine(string.Format("Amount:{0}", f.Value.SwiftToDecimal()));
+                    Console.WriteLine(string.Format("Currency:{0}", f["Currency"]));
+                    Console.WriteLine(string.Format("ValueDate:{0}", f["ValueDate"].SwiftToDateTime()));
+
+                    f = m.Text.SwiftFirst("50K", "50F");
+                    Console.WriteLine(string.Format("Account:{0}", f.Value));
+                    Console.WriteLine(string.Format("Name:{0}", f["Name"]));
+                    Console.WriteLine(string.Format("Address:{0}", f.SwiftConcat(new[] { "Address", "CountryAndTown" })));
                 }
             }
         }

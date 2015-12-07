@@ -14,6 +14,8 @@ namespace Swift
 
         class ReaderState
         {
+            public int CurrentIndex = 0;
+            public int Index = 0;
             public int Pos = 0;// position in source file
             public int Line = 0;
             public int Deep = 0;
@@ -25,6 +27,24 @@ namespace Swift
             public Section Current = null;
             public Stack<Section> Stack = new Stack<Section>(3);
             public Stack<Section> Messages = new Stack<Section>(2);
+
+            public Section Pop(bool atEnd = false)
+            {
+                if (atEnd)
+                {
+                    // searchBuffer.Length throw exception if buffer is not empty???
+                    // no close character for message to move it to stateReader.Messages
+                    if (Deep != 0)
+                    {
+                        throw new NotFullyEnededMessageException();
+                    }
+                    return Stack.Count > 0 ? Stack.Pop() : null;
+                }
+                else
+                {
+                    return Messages.Count > 0 ? Messages.Pop() : null;
+                }
+            }
         }
 
         bool readerOwher;
@@ -49,9 +69,10 @@ namespace Swift
 
         public async Task<Section> ReadAsync()
         {
-            if (readerState.Messages.Count > 0)
+            var m = readerState.Pop();
+            if (m != null)
             {
-                return readerState.Messages.Pop();
+                return m;
             }
 
             var buffer = new char[settings.BufferSize];
@@ -79,33 +100,23 @@ namespace Swift
                     readerState.StartPos = 0;
                 }
 
-                if (readerState.Messages.Count > 0)
+                if ((m = readerState.Pop()) != null)
                 {
-                    return readerState.Messages.Pop();
+                    return m;
                 }
 
             } while (read != 0);
 
-            if (readerState.Deep != 0)
-            {
-                throw new NotFullyEnededMessageException();
-            }
 
-            // no close character for message to move it to stateReader.Messages
-            if (readerState.Stack.Count > 0)
-            {
-                return readerState.Stack.Pop();
-            }
-
-            return null;
-            // searchBuffer.Length throw exception if buffer is not empty???
+            return readerState.Pop(true);
         }
 
         public Section Read()
         {
-            if (readerState.Messages.Count > 0)
+            var m = readerState.Pop();
+            if (m != null)
             {
-                return readerState.Messages.Pop();
+                return m;
             }
 
             var buffer = new char[settings.BufferSize];
@@ -133,26 +144,15 @@ namespace Swift
                     readerState.StartPos = 0;
                 }
 
-                if (readerState.Messages.Count > 0)
+                if ((m = readerState.Pop()) != null)
                 {
-                    return readerState.Messages.Pop();
+                    return m;
                 }
 
             } while (read != 0);
 
-            if (readerState.Deep != 0)
-            {
-                throw new NotFullyEnededMessageException();
-            }
 
-            // no close character for message to move it to stateReader.Messages
-            if (readerState.Stack.Count > 0)
-            {
-                return readerState.Stack.Pop();
-            }
-
-            return null;
-            // searchBuffer.Length throw exception if buffer is not empty???
+            return readerState.Pop(true);
         }
 
         int ReadBuffer()
@@ -250,6 +250,8 @@ namespace Swift
                             --readerState.Deep;
                             readerState.SecondOpen = 0;
                             readerState.Current.EndPos = readerState.Pos;
+                            readerState.Current.Index = ++readerState.CurrentIndex;
+
                             if (readerState.Current.Data == null)
                             {
                                 readerState.Current.Data = buffer.ToString(currentPos, i - currentPos);
@@ -281,10 +283,12 @@ namespace Swift
                                 readerState.Ongoing = buffer[i] == '$';// разделител м/у две съобщения
                                 readerState.SearchStart = 0;
                                 readerState.Container.EndPos = readerState.Pos - 1;
+                                readerState.Container.Index = ++readerState.Index;
                                 readerState.Messages.Push(readerState.Container);
 
                                 readerState.Container = null;
                                 readerState.Current = null;
+                                readerState.CurrentIndex = 0;
                                 readerState.Stack.Clear();
                                 currentPos = i + 1;
                                 find = true;

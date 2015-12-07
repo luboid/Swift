@@ -38,12 +38,13 @@ namespace Swift
                 var grps = match.Groups;
                 return new[] { new ApplicationHeaderBlockO
                 {
-                    MessageType = grps[2].Value,
-                    InputTime = grps[3].Value,
-                    InputReference = grps[4].Value,
-                    OutputDate = grps[5].Value,
-                    OutputTime = grps[6].Value,
-                    Priority = grps[7].Value[0]
+                    MessageType = grps["MessageType"].Value,
+                    InputTime = grps["InputTime"].Value,
+                    InputReference = grps["InputReference"].Value,
+                    OutputDate = grps["OutputDate"].Value,
+                    OutputTime = grps["OutputTime"].Value,
+                    Priority = grps["Priority"].Value[0],
+                    SendersAddress = grps["SendersAddress"].Value
                 } };
             }
             else
@@ -54,11 +55,11 @@ namespace Swift
                     var grps = match.Groups;
                     return new[] { new ApplicationHeaderBlockI
                     {
-                        MessageType = grps[2].Value,
-                        ReceiverAddress = grps[3].Value,
-                        Priority = grps[4].Value[0],
-                        DeliveryMonitoring = grps[5].Value[0],
-                        ObsolescencePeriod = grps[6].Value
+                        MessageType = grps["MessageType"].Value,
+                        ReceiversAddress = grps["ReceiversAddress"].Value,
+                        Priority = grps["Priority"].Value[0],
+                        DeliveryMonitoring = grps["DeliveryMonitoring"].Value[0],
+                        ObsolescencePeriod = grps["ObsolescencePeriod"].Value
                     } };
                 }
             }

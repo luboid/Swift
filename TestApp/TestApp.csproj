@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SwiftUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="examples\0060692808311101.tgt">

@@ -197,14 +197,16 @@ namespace Swift
                                         {
                                             foreach (var id in r.ValueNames)
                                             {
-                                                mg = m.Groups[id];
-                                                if (id == "Value")
+                                                if ((mg = m.Groups[id]).Success)
                                                 {
-                                                    tag.Value = mg.Success ? mg.Value : null;
-                                                }
-                                                else
-                                                {
-                                                    tag.Add(id + (options.CounterPostfix ? counter.ToString() : string.Empty), mg.Success ? mg.Value : null);
+                                                    if (id == "Value")
+                                                    {
+                                                        tag.Value = mg.Value;
+                                                    }
+                                                    else
+                                                    {
+                                                        tag.Add(id + (options.CounterPostfix ? counter.ToString() : string.Empty), mg.Value);
+                                                    }
                                                 }
                                             }
                                             ++counter;

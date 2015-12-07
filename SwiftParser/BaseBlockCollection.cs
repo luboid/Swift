@@ -39,6 +39,14 @@ namespace Swift
             return List.GetEnumerator();
         }
 
+        public bool ContainsKey(string key)
+        {
+            if (null == _list)
+                return false;
+
+            return _list.Where(item => item.Id == key).Any();
+        }
+
         public T this[string key]
         {
             get
@@ -46,7 +54,7 @@ namespace Swift
                 if (null == _list)
                     return New(key);
 
-                return List.Where(item => item.Id == key).FirstOrDefault() ?? New(key);
+                return _list.Where(item => item.Id == key).FirstOrDefault() ?? New(key);
             }
         }
     }

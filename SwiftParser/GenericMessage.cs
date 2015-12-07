@@ -10,13 +10,24 @@ namespace Swift
     public class GenericMessage : IEnumerable<IBaseBlock>
     {
         List<IBaseBlock> _blocks;
+        BasicHeaderBlock _basic;
+        ApplicationHeaderBlock _app;
+        UserHeaderBlock _user;
+        TextBlock _text;
+        TrailerBlock _trailer;
+        TrailerSBlock _trailerS;
 
         public Section Raw { get; private set; }
         public BasicHeaderBlock Basic
         {
             get
             {
-                return _blocks.OfType<BasicHeaderBlock>().FirstOrDefault();
+                if (null == _basic)
+                {
+                    var query = _blocks.OfType<BasicHeaderBlock>().ToList();
+                    _basic = query.Where(b => b.ServiceID == "01").FirstOrDefault() ?? query.FirstOrDefault();
+                }
+                return _basic;
             }
         }
 
@@ -24,7 +35,11 @@ namespace Swift
         {
             get
             {
-                return _blocks.OfType<ApplicationHeaderBlock>().FirstOrDefault();
+                if (null == _app)
+                {
+                    _app = _blocks.OfType<ApplicationHeaderBlock>().FirstOrDefault();
+                }
+                return _app;
             }
         }
 
@@ -32,7 +47,11 @@ namespace Swift
         {
             get
             {
-                return _blocks.OfType<UserHeaderBlock>().FirstOrDefault();
+                if (_user == null)
+                {
+                    _user = _blocks.OfType<UserHeaderBlock>().FirstOrDefault();
+                }
+                return _user;
             }
         }
 
@@ -40,7 +59,11 @@ namespace Swift
         {
             get
             {
-                return _blocks.OfType<TextBlock>().FirstOrDefault();
+                if (null == _text)
+                {
+                    _text = _blocks.OfType<TextBlock>().FirstOrDefault();
+                }
+                return _text;
             }
         }
 
@@ -48,7 +71,11 @@ namespace Swift
         {
             get
             {
-                return _blocks.OfType<TrailerBlock>().FirstOrDefault();
+                if (null == _trailer)
+                {
+                    _trailer = _blocks.OfType<TrailerBlock>().FirstOrDefault();
+                }
+                return _trailer;
             }
         }
 
@@ -56,7 +83,11 @@ namespace Swift
         {
             get
             {
-                return _blocks.OfType<TrailerSBlock>().FirstOrDefault();
+                if (null == _trailerS)
+                {
+                    _trailerS = _blocks.OfType<TrailerSBlock>().FirstOrDefault();
+                }
+                return _trailerS;
             }
         }
 
@@ -70,25 +101,22 @@ namespace Swift
             return GetEnumerator();
         }
 
-        public static bool Create(Section raw, out GenericMessage message, out InvalidBlock[] invalidBlocks)
+        public static GenericMessage Create(Section raw)
         {
-            message = null;
-            invalidBlocks = null;
-
             var query = raw.Sections
                 .GroupBy(s => s.BlockId)
                 .SelectMany(s => Factory.CreateBlock(s.ToArray()));
 
-            invalidBlocks = query
+            var invalidBlocks = query
                 .OfType<InvalidBlock>()
                 .ToArray();
 
             if (invalidBlocks.Length != 0)
             {
-                return false;
+                throw new InvalidBlockException(invalidBlocks);
             }
 
-            message = new GenericMessage();
+            var message = new GenericMessage();
 
             var basic = query
                 .OfType<BasicHeaderBlock>()
@@ -96,10 +124,9 @@ namespace Swift
 
             if (0 == basic)// only basic block is madatory
             {
-                invalidBlocks = new[] {
+                throw new InvalidBlockException(
                     new InvalidBlock("UNKNOWN", new[] { raw })
-                        .AddMessage(string.Format("Expect message to have at least one block of type {0}.", BasicHeaderBlock.BLOCK_ID))
-                };
+                        .AddMessage(string.Format("Expect message to have at least one block of type {0}.", BasicHeaderBlock.BLOCK_ID)));
             }
 
             message = new GenericMessage
@@ -111,19 +138,15 @@ namespace Swift
             var id = Factory.CreateMessageId(message);
             if (null == id)
             {
-                invalidBlocks = new[] {
-                    new InvalidBlock("UNKNOWN", new[] { raw })
-                    .AddMessage("Unknown message.")
-                };
+                throw new InvalidBlockException(new InvalidBlock("UNKNOWN", new[] { raw })
+                    .AddMessage("Unknown message."));
             }
 
             var tags = Factory.GetMessageFields(id);
             if (null == id)
             {
-                invalidBlocks = new[] {
-                    new InvalidBlock("UNKNOWN", new[] { raw })
-                    .AddMessage(string.Format("Unsupported message {0}.", id))
-                };
+                throw new InvalidBlockException(new InvalidBlock("UNKNOWN", new[] { raw })
+                    .AddMessage(string.Format("Unsupported message {0}.", id)));
             }
 
             var text = message.Text?.OfType<Field>().ToList(); var count = 0;
@@ -135,28 +158,35 @@ namespace Swift
 
                 if (count > 0)
                 {
-                    invalidBlocks = new[]
-                    {
-                        new InvalidBlock("UNKNOWN", new[] { raw })
-                            .AddMessage(string.Format("Message contains unsupported fields ({0}).", count))
-                    };
+                    throw new InvalidBlockException(new InvalidBlock(TextBlock.BLOCK_ID, raw.Sections.Where(i => i.BlockId == TextBlock.BLOCK_ID).ToArray())
+                            .AddMessage(string.Format("Message contains unsupported fields ({0}).", count)));
                 }
             }
 
             count = tags
                 .Where(t => !t.Optional)
-                .Where(t => null == text || !text.Where(i => i.FieldId == t.Id && Array.IndexOf(t.Letters, i.Letter) > 0).Any())
+                .Where(t => null == text || !text.Where(i => i.FieldId == t.Id && Array.IndexOf(t.Letters, i.Letter) > -1).Any())
                 .Count();
 
             if (count > 0)
             {
-                invalidBlocks = new[]
-                {
-                        new InvalidBlock("UNKNOWN", new[] { raw })
-                            .AddMessage(string.Format("Message don't contains mandatory fields ({0}).", count))
-                };
+                throw new InvalidBlockException(new InvalidBlock(TextBlock.BLOCK_ID, raw.Sections.Where(i => i.BlockId == TextBlock.BLOCK_ID).ToArray())
+                            .AddMessage("Message don't contains mandatory fields."));
             }
-            return true;
+
+            // mutual exclusive fields
+            count = tags
+                .Where(t => t.Letters.Length > 1)
+                .Select(t => null == text ? 0 : text.Where(i => i.FieldId == t.Id && Array.IndexOf(t.Letters, i.Letter) > -1).Select(i => i.Id).Distinct().Count())
+                .Where(i => i > 1)
+                .Count();
+            if (count > 0)
+            {
+                throw new InvalidBlockException(new InvalidBlock(TextBlock.BLOCK_ID, raw.Sections.Where(i => i.BlockId == TextBlock.BLOCK_ID).ToArray())
+                            .AddMessage("Message contains mutual exclusive fields."));
+            }
+
+            return message;
         }
 
     }

@@ -7,14 +7,8 @@ using System.Threading.Tasks;
 
 namespace Swift
 {
-    public class Tag : IEnumerable<Tag.TagValue>, IEnumerable
+    public class Tag : IEnumerable<TagValue>, IEnumerable
     {
-        public class TagValue
-        {
-            public string Id { get; internal set; }
-            public string Value { get; internal set; }
-        }
-
         string _id;
         int _index;
         List<TagValue> _values;
@@ -30,7 +24,15 @@ namespace Swift
         public string Id { get { return _id; } }
         public int Index { get { return _index; } }
 
-        public string Value { get; internal set; }
+        internal protected List<TagValue> Values
+        {
+            get
+            {
+                if (null == _values)
+                    _values = new List<TagValue>();
+                return _values;
+            }
+        }
 
         public bool ContainsKey(string id)
         {
@@ -50,22 +52,35 @@ namespace Swift
 
                 return _values.Where(item => item.Id == id).FirstOrDefault()?.Value;
             }
+            internal protected set
+            {
+                var item = Values.Where(v => v.Id == id).FirstOrDefault();
+                if (null == item)
+                {
+                    Add(id, value);
+                }
+                else
+                {
+                    item.Value = value;
+                }
+            }
         }
 
-        public string Get(string id, string separator = ", ")
+        public string Value
         {
-            if (_values == null)
-                return null;
-
-            return string.Join(separator, _values.Where(item => item.Id == id).Select(item => item.Value).ToArray());
+            get
+            {
+                return this["Value"];
+            }
+            internal protected set
+            {
+                this["Value"] = value;
+            }
         }
 
-        public void Add(string id, string value)
+        internal protected void Add(string id, string value)
         {
-            if (_values == null)
-                _values = new List<TagValue>();
-
-            _values.Add(new TagValue { Id = id, Value = value });
+            Values.Add(new TagValue { Id = id, Value = value });
         }
 
         public IEnumerator<TagValue> GetEnumerator()

@@ -12,6 +12,7 @@ namespace Swift
         string _data;
         string _blockId;
 
+        public int Index { get; set; }
         public int StartPos { get; set; }
         public int EndPos { get; set; }
         public string BlockId
