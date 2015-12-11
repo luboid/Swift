@@ -161,6 +161,9 @@ namespace Swift
             {
                 var lineIndex = 0; NameMap map = null; var lines = item.Lines; var counter = 0;
                 var options = item.TagOption; var tag = item.Tag;
+
+                tag.Raw = item.Data;
+
                 // item.TagOption.CounterPostfix remove this at some poit and support SubTag field which can combine multiple values againts one key
                 if (options.Blob)
                 {

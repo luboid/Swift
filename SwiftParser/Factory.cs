@@ -34,6 +34,7 @@ namespace Swift
                 MultiLine = 1;
             }
 
+            public string Description { get; internal set; }
             public string Letter { get; internal set; }
             public bool Blob { get; internal set; }
             public int MultiLine { get; internal set; }
@@ -62,12 +63,13 @@ namespace Swift
         public class TagConfig
         {
             public string Id { get; internal set; }
+            public string Description { get; internal set; }
             public TagOption[] Options { get; internal set; }
         }
 
         static Factory()
         {
-            Tag("13", new TagOption
+            Tag("13", "Time Indication", new TagOption
             {
                 Letter = "C",
                 Rows = new[] {
@@ -77,7 +79,7 @@ namespace Swift
                     }
                 }
             });
-            Tag("20", new TagOption
+            Tag("20", "Sender's Reference", new TagOption
             {
                 Rows = new[] {
                     new TagOptionRow {
@@ -85,7 +87,7 @@ namespace Swift
                     }
                 }
             });
-            Tag("21", new TagOption
+            Tag("21", "Related Reference", new TagOption
             {
                 Rows = new[] {
                     new TagOptionRow {
@@ -93,7 +95,7 @@ namespace Swift
                     }
                 }
             });
-            Tag("23",
+            Tag("23", "Bank Operation Code",
                 new TagOption
                 {
                     Letter = "B",
@@ -113,7 +115,7 @@ namespace Swift
                         }
                     }
                 });
-            Tag("25", new TagOption
+            Tag("25", "Account Identification", new TagOption
             {
                 Rows = new[] {
                     new TagOptionRow {
@@ -121,7 +123,7 @@ namespace Swift
                     }
                 }
             });
-            Tag("26", new TagOption
+            Tag("26", "Transaction Type Code", new TagOption
             {
                 Letter = "T",
                 Rows = new[] {
@@ -130,7 +132,7 @@ namespace Swift
                     }
                 }
             });
-            Tag("28", new TagOption
+            Tag("28", "Statement Number/Sequence Number", new TagOption
             {
                 Letter = "C",
                 Rows = new[] {
@@ -140,7 +142,7 @@ namespace Swift
                     }
                 }
             });
-            Tag("32", new TagOption
+            Tag("32", "Value Date/Currency/Interbank Settled Amount", new TagOption
             {
                 Letter = "A",
                 Rows = new[] {
@@ -150,7 +152,7 @@ namespace Swift
                     }
                 }
             });
-            Tag("33", new TagOption
+            Tag("33", "Currency/Instructed Amount", new TagOption
             {
                 Letter = "B",
                 Rows = new[] {
@@ -160,7 +162,7 @@ namespace Swift
                     }
                 }
             });
-            Tag("36", new TagOption
+            Tag("36", "Exchange Rate", new TagOption
             {
                 Rows = new[] {
                     new TagOptionRow {
@@ -168,7 +170,7 @@ namespace Swift
                     }
                 }
             });
-            Tag("50",
+            Tag("50", "Ordering Customer",
                 new TagOption
                 {
                     Letter = "A",
@@ -238,7 +240,7 @@ namespace Swift
                         }
                     }
                 });
-            Tag("51", new TagOption
+            Tag("51", "Sending Institution", new TagOption
             {
                 Letter = "A",
                 Rows = new[] {
@@ -258,7 +260,7 @@ namespace Swift
                     }
                 }
             });
-            Tag("52",
+            Tag("52", "Ordering Institution",
                 new TagOption
                 {
                     Letter = "A",
@@ -273,9 +275,9 @@ namespace Swift
                         },
                         new TagOptionRow {
                             Regex = new[] {
-                                new Regex(@"^(?<IdentifierCode>[A-Z]{4}[A-Z]{2}[0-9A-Z]{2}(?:[0-9A-Z]{3}|))$", RegexOptions.Compiled)
+                                new Regex(@"^(?<IdentifierCode>[A-Z]{4}(?<Country>[A-Z]{2})[0-9A-Z]{2}(?:[0-9A-Z]{3}|))$", RegexOptions.Compiled)
                             },
-                            ValueNames = new[] { "IdentifierCode" }
+                            ValueNames = new[] { "IdentifierCode", "Country" }
                         }
                     }
                 },
@@ -304,74 +306,7 @@ namespace Swift
                         }
                     }
                 });
-            Tag("53",
-                new TagOption
-                {
-                    Letter = "A",
-                    Rows = new[] {
-                        new TagOptionRow {
-                            Regex = new[] {
-                                new Regex(@"^(?:\/)(?<Value>[A-Z]{1})$", RegexOptions.Compiled),
-                                new Regex(@"^(?:\/)(?<Value>[A-Za-z0-9\/\-\?\:\(\)\.,’\+ ]{1,34})$", RegexOptions.Compiled)
-                            },
-                            ValueNames = new[] { "Value" },
-                            Optional = true
-                        },
-                        new TagOptionRow {
-                            Regex = new[] {
-                                new Regex(@"^(?<IdentifierCode>[A-Z]{4}[A-Z]{2}[0-9A-Z]{2}(?:[0-9A-Z]{3}|))$", RegexOptions.Compiled)
-                            },
-                            ValueNames = new[] { "IdentifierCode" }
-                        }
-                    }
-                },
-                new TagOption
-                {
-                    Letter = "B",
-                    Rows = new[] {
-                        new TagOptionRow {
-                            Regex = new[] {
-                                new Regex(@"^(?:\/)(?<Value>[A-Z]{1})$", RegexOptions.Compiled),
-                                new Regex(@"^(?:\/)(?<Value>[A-Za-z0-9\/\-\?\:\(\)\.,’\+ ]{1,34})$", RegexOptions.Compiled)
-                            },
-                            ValueNames = new[] { "Value" },
-                            Optional = true
-                        },
-                        new TagOptionRow {
-                            Regex = new[] {
-                                new Regex(@"^(?<Location>[A-Za-z0-9\/\-\?\:\(\)\.,’\+ ]{1,35})$", RegexOptions.Compiled)
-                            },
-                            ValueNames = new[] { "Location" },
-                            Optional = true
-                        }
-                    }
-                },
-                new TagOption
-                {
-                    Letter = "D",
-                    Rows = new[] {
-                        new TagOptionRow {
-                            Regex = new[] {
-                                new Regex(@"^(?:\/)(?<Value>[A-Z]{1})$", RegexOptions.Compiled),
-                                new Regex(@"^(?:\/)(?<Value>[A-Za-z0-9\/\-\?\:\(\)\.,’\+ ]{1,34})$", RegexOptions.Compiled)
-                            },
-                            ValueNames = new[] { "Value" },
-                            Optional = true
-                        },
-                        new TagOptionRow {
-                            Regex = new[] {
-                                new Regex(@"^(?<Name>[A-Za-z0-9\/\-\?\:\(\)\.,’\+ ]{1,35})$", RegexOptions.Compiled)
-                            },
-                            ValueNames = new[] { "Name" }
-                        },
-                        new TagOptionRow {
-                            Regex = new[] { new Regex(@"^(?<Address>[A-Za-z0-9\/\-\?\:\(\)\.,’\+ ]{1,35})$", RegexOptions.Compiled) },
-                            Lines = 3,
-                            ValueNames = new[] { "Address" }
-                        }
-                    }
-                });
-            Tag("54",
+            Tag("53", "Sender's Correspondent",
                 new TagOption
                 {
                     Letter = "A",
@@ -438,7 +373,7 @@ namespace Swift
                         }
                     }
                 });
-            Tag("55",
+            Tag("54", "Receiver's Correspondent",
                 new TagOption
                 {
                     Letter = "A",
@@ -505,7 +440,74 @@ namespace Swift
                         }
                     }
                 });
-            Tag("56",
+            Tag("55", "Third Reimbursement Institution",
+                new TagOption
+                {
+                    Letter = "A",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] {
+                                new Regex(@"^(?:\/)(?<Value>[A-Z]{1})$", RegexOptions.Compiled),
+                                new Regex(@"^(?:\/)(?<Value>[A-Za-z0-9\/\-\?\:\(\)\.,’\+ ]{1,34})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "Value" },
+                            Optional = true
+                        },
+                        new TagOptionRow {
+                            Regex = new[] {
+                                new Regex(@"^(?<IdentifierCode>[A-Z]{4}[A-Z]{2}[0-9A-Z]{2}(?:[0-9A-Z]{3}|))$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "IdentifierCode" }
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Letter = "B",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] {
+                                new Regex(@"^(?:\/)(?<Value>[A-Z]{1})$", RegexOptions.Compiled),
+                                new Regex(@"^(?:\/)(?<Value>[A-Za-z0-9\/\-\?\:\(\)\.,’\+ ]{1,34})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "Value" },
+                            Optional = true
+                        },
+                        new TagOptionRow {
+                            Regex = new[] {
+                                new Regex(@"^(?<Location>[A-Za-z0-9\/\-\?\:\(\)\.,’\+ ]{1,35})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "Location" },
+                            Optional = true
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Letter = "D",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] {
+                                new Regex(@"^(?:\/)(?<Value>[A-Z]{1})$", RegexOptions.Compiled),
+                                new Regex(@"^(?:\/)(?<Value>[A-Za-z0-9\/\-\?\:\(\)\.,’\+ ]{1,34})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "Value" },
+                            Optional = true
+                        },
+                        new TagOptionRow {
+                            Regex = new[] {
+                                new Regex(@"^(?<Name>[A-Za-z0-9\/\-\?\:\(\)\.,’\+ ]{1,35})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "Name" }
+                        },
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^(?<Address>[A-Za-z0-9\/\-\?\:\(\)\.,’\+ ]{1,35})$", RegexOptions.Compiled) },
+                            Lines = 3,
+                            ValueNames = new[] { "Address" }
+                        }
+                    }
+                });
+            Tag("56", "Intermediary Institution",
                 new TagOption
                 {
                     Letter = "A",
@@ -563,7 +565,7 @@ namespace Swift
                         }
                     }
                 });
-            Tag("58",
+            Tag("58", "Beneficiary Institution",
                 new TagOption
                 {
                     Letter = "A",
@@ -609,7 +611,7 @@ namespace Swift
                         }
                     }
                 });
-            Tag("57",
+            Tag("57", "Account With Institution",
                 new TagOption
                 {
                     Letter = "A",
@@ -688,7 +690,7 @@ namespace Swift
                         }
                     }
                 });
-            Tag("59",
+            Tag("59", "Beneficiary Customer",
                 new TagOption
                 {
                     Rows = new[] {
@@ -748,7 +750,7 @@ namespace Swift
                         }
                     }
                 });
-            Tag("60", new TagOption
+            Tag("60", "Opening Balance", new TagOption
             {
                 Letter = "F",
                 Rows = new[] {
@@ -767,7 +769,7 @@ namespace Swift
                     }
                 }
             });
-            Tag("61", new TagOption
+            Tag("61", "Statement Line", new TagOption
             {
                 Rows = new[] {
                     new TagOptionRow {
@@ -781,7 +783,7 @@ namespace Swift
                     }
                 }
             });
-            Tag("62", new TagOption
+            Tag("62", "Closing Balance (Booked Funds)", new TagOption
             {
                 Letter = "F",
                 Rows = new[] {
@@ -800,7 +802,7 @@ namespace Swift
                     }
                 }
             });
-            Tag("64", new TagOption
+            Tag("64", "Closing Available Balance (Available Funds)", new TagOption
             {
                 Rows = new[] {
                     new TagOptionRow {
@@ -809,7 +811,7 @@ namespace Swift
                     }
                 }
             });
-            Tag("70", new TagOption
+            Tag("70", "Remittance Information", new TagOption
             {
                 Rows = new[] {
                     new TagOptionRow {
@@ -819,9 +821,10 @@ namespace Swift
                     }
                 }
             });
-            Tag("71",
+            Tag("71", null,
                 new TagOption
                 {
+                    Description = "Details of Charges",
                     Letter = "A",
                     Rows = new[] {
                         new TagOptionRow {
@@ -831,6 +834,7 @@ namespace Swift
                 },
                 new TagOption
                 {
+                    Description = "Sender's Charges",
                     Letter = "F",
                     Rows = new[] {
                         new TagOptionRow {
@@ -841,6 +845,7 @@ namespace Swift
                 },
                 new TagOption
                 {
+                    Description = "Receiver's Charges",
                     Letter = "G",
                     Rows = new[] {
                         new TagOptionRow {
@@ -849,7 +854,7 @@ namespace Swift
                         }
                     }
                 });
-            Tag("72", new TagOption
+            Tag("72", "Sender to Receiver Information", new TagOption
             {
                 CounterPostfix = true,
                 Rows = new[] {
@@ -867,7 +872,7 @@ namespace Swift
                     }
                 }
             });
-            Tag("77",
+            Tag("77", "Regulatory Reporting",
                 new TagOption
                 {
                     Letter = "B",
@@ -886,7 +891,8 @@ namespace Swift
                 new TagOption
                 { // blob
                     Letter = "T",
-                    Blob = true
+                    Blob = true,
+                    Description = "Envelope Contents"
                 });
 
             Message("950", new TagEnabled
@@ -1302,9 +1308,9 @@ namespace Swift
             });
         }
 
-        static void Tag(string id, params TagOption[] optios)
+        static void Tag(string id, string description, params TagOption[] optios)
         {
-            tags[id] = new TagConfig { Id = id, Options = optios };
+            tags[id] = new TagConfig { Id = id, Options = optios, Description = description };
         }
 
         static void Message(string id, params TagEnabled[] options)
@@ -1373,6 +1379,22 @@ namespace Swift
                 return cfg.Options.Where(o => o.Letter == letter).FirstOrDefault();
             else
                 return null;
+        }
+
+        public static string GetDescription(Field field)
+        {
+            return GetDescription(field.FieldId, field.Letter);
+        }
+
+        public static string GetDescription(string tag, string letter)
+        {
+            TagConfig cfg; letter = letter ?? string.Empty;
+            if (tags.TryGetValue(tag, out cfg))
+            {
+                var t = cfg.Options.Where(o => o.Letter == letter).FirstOrDefault();
+                return cfg.Description ?? t?.Description;
+            }
+            return null;
         }
     }
 }
