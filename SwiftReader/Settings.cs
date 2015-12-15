@@ -14,7 +14,7 @@ namespace Swift
             {
                 Begin = (char)1,
                 End = (char)3,
-                BufferSize = 4096,
+                BufferSize = Reader.READ_BUFFER_SIZE,
                 MaxCharactersToStart = 512,
                 MaxSections = 8,
                 CharSet = new CharSet

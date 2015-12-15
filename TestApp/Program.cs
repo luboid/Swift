@@ -26,7 +26,7 @@ namespace TestApp
         static void Process()
         {
             Swift.Section section;
-            using (var r = Swift.Reader.Create("examples\\0060692808311101.tgt"))
+            using (var r = Swift.Reader.Create("examples\\MT103-72.txt"))
             {
                 while ((section = r.Read()) != null)
                 {
@@ -37,14 +37,26 @@ namespace TestApp
 
                     var f = m.Text.SwiftFirst("32A");
 
-                    Console.WriteLine(string.Format("Amount:{0}", f.Value.SwiftToDecimal()));
-                    Console.WriteLine(string.Format("Currency:{0}", f["Currency"]));
-                    Console.WriteLine(string.Format("ValueDate:{0}", f["ValueDate"].SwiftToDateTime()));
+                    Console.WriteLine(string.Format("32A:Amount:{0}", f.Value.SwiftToDecimal()));
+                    Console.WriteLine(string.Format("32A:Currency:{0}", f["Currency"]));
+                    Console.WriteLine(string.Format("32A:ValueDate:{0}", f["ValueDate"].SwiftToDateTime()));
 
                     f = m.Text.SwiftFirst("50K", "50F");
-                    Console.WriteLine(string.Format("Account:{0}", f.Value));
-                    Console.WriteLine(string.Format("Name:{0}", f["Name"]));
-                    Console.WriteLine(string.Format("Address:{0}", f.SwiftConcat(new[] { "Address", "CountryAndTown" })));
+                    Console.WriteLine(string.Format("50?:Account:{0}", f.Value));
+                    Console.WriteLine(string.Format("50?:Name:{0}", f["Name"]));
+                    Console.WriteLine(string.Format("50?:Address:{0}", f.SwiftConcat(new[] { "Address", "CountryAndTown" })));
+
+                    f = m.Text.SwiftFirstOrDefault("72");
+                    if (f != null)
+                    {
+                        var counter = 0;
+                        foreach (var item in f.Where(i => i.Id == "Item"))
+                        {
+                            Console.WriteLine("72:Item:{0}", ++counter);
+                            Console.WriteLine("72:Code:{0}", item["Code"]);
+                            Console.WriteLine("72:Narrative:{0}", item.SwiftConcat("Narrative"));
+                        }
+                    }
                 }
             }
         }

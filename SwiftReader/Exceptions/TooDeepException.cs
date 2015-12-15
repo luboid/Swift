@@ -8,8 +8,8 @@ namespace Swift
 {
     public class TooDeepException : SwiftReaderException
     {
-        public TooDeepException(int deep)
-            : base(string.Format("Nesting of the sections is greater than the permissible ({0}).", deep))
+        public TooDeepException(int index, int deep)
+            : base(string.Format("Nesting of the sections is greater than the permissible ({0}) in message #{1}.", deep, index))
         { }
     }
 }

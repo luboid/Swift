@@ -113,7 +113,7 @@ namespace Swift
 
             if (invalidBlocks.Length != 0)
             {
-                throw new InvalidBlockException(invalidBlocks);
+                throw new InvalidBlockException(raw, invalidBlocks);
             }
 
             var message = new GenericMessage();
@@ -124,8 +124,7 @@ namespace Swift
 
             if (0 == basic)// only basic block is madatory
             {
-                throw new InvalidBlockException(
-                    new InvalidBlock("UNKNOWN", new[] { raw })
+                throw new InvalidBlockException(raw, new InvalidBlock("UNKNOWN", new[] { raw })
                         .AddMessage(string.Format("Expect message to have at least one block of type {0}.", BasicHeaderBlock.BLOCK_ID)));
             }
 
@@ -138,14 +137,14 @@ namespace Swift
             var id = Factory.CreateMessageId(message);
             if (null == id)
             {
-                throw new InvalidBlockException(new InvalidBlock("UNKNOWN", new[] { raw })
+                throw new InvalidBlockException(raw, new InvalidBlock("UNKNOWN", new[] { raw })
                     .AddMessage("Unknown message."));
             }
 
             var tags = Factory.GetMessageFields(id);
             if (null == id)
             {
-                throw new InvalidBlockException(new InvalidBlock("UNKNOWN", new[] { raw })
+                throw new InvalidBlockException(raw, new InvalidBlock("UNKNOWN", new[] { raw })
                     .AddMessage(string.Format("Unsupported message {0}.", id)));
             }
 
@@ -158,7 +157,7 @@ namespace Swift
 
                 if (count > 0)
                 {
-                    throw new InvalidBlockException(new InvalidBlock(TextBlock.BLOCK_ID, raw.Sections.Where(i => i.BlockId == TextBlock.BLOCK_ID).ToArray())
+                    throw new InvalidBlockException(raw, new InvalidBlock(TextBlock.BLOCK_ID, raw.Sections.Where(i => i.BlockId == TextBlock.BLOCK_ID).ToArray())
                             .AddMessage(string.Format("Message contains unsupported fields ({0}).", count)));
                 }
             }
@@ -170,7 +169,7 @@ namespace Swift
 
             if (count > 0)
             {
-                throw new InvalidBlockException(new InvalidBlock(TextBlock.BLOCK_ID, raw.Sections.Where(i => i.BlockId == TextBlock.BLOCK_ID).ToArray())
+                throw new InvalidBlockException(raw, new InvalidBlock(TextBlock.BLOCK_ID, raw.Sections.Where(i => i.BlockId == TextBlock.BLOCK_ID).ToArray())
                             .AddMessage("Message don't contains mandatory fields."));
             }
 
@@ -182,7 +181,7 @@ namespace Swift
                 .Count();
             if (count > 0)
             {
-                throw new InvalidBlockException(new InvalidBlock(TextBlock.BLOCK_ID, raw.Sections.Where(i => i.BlockId == TextBlock.BLOCK_ID).ToArray())
+                throw new InvalidBlockException(raw, new InvalidBlock(TextBlock.BLOCK_ID, raw.Sections.Where(i => i.BlockId == TextBlock.BLOCK_ID).ToArray())
                             .AddMessage("Message contains mutual exclusive fields."));
             }
 

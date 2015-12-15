@@ -19,5 +19,6 @@ namespace Swift
 
         public string FieldId { get { return _fieldId; } }
         public string Letter { get { return _letter; } }
+        public string Raw { get; internal set; }
     }
 }

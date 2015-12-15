@@ -154,6 +154,35 @@ namespace Swift
             return string.IsNullOrEmpty(val) ? defaultValue : val;
         }
 
+        public static string SwiftConcat(this IEnumerable<TagValue.TagValueItem> _this, string[] ids, string separator = " ", string defaultValue = null)
+        {
+            var buffer = new StringBuilder();
+            foreach (var item in _this.Where(i => Array.IndexOf(ids, i.Id) > -1))
+            {
+                if (buffer.Length > 0)
+                    buffer.Append(separator);
+
+                buffer.Append(item.Value);
+            }
+            var val = buffer.ToString().Trim().Trim(separator.ToCharArray());
+            return string.IsNullOrEmpty(val) ? defaultValue : val;
+        }
+
+        public static string SwiftConcat(this IEnumerable<TagValue.TagValueItem> _this, string id, string separator = " ", string defaultValue = null)
+        {
+            var buffer = new StringBuilder();
+            foreach (var item in _this.Where(i => i.Id == id))
+            {
+                if (buffer.Length > 0)
+                    buffer.Append(separator);
+
+                buffer.Append(item.Value);
+            }
+
+            var val = buffer.ToString().Trim().Trim(separator.ToCharArray());
+            return string.IsNullOrEmpty(val) ? defaultValue : val;
+        }
+
         public static int SwiftSafeLength(this string value)
         {
             if (value == null)

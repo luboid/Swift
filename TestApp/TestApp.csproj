@@ -46,6 +46,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="examples\MT103-72.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="examples\0060692808311101.tgt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

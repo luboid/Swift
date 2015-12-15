@@ -78,9 +78,18 @@ namespace Swift
             }
         }
 
-        internal protected void Add(string id, string value)
+        internal protected TagValue Add(string id, string value)
         {
-            Values.Add(new TagValue { Id = id, Value = value });
+            var tagValue = new TagValue { Id = id, Value = value };
+            Values.Add(tagValue);
+            return tagValue;
+        }
+
+        internal protected TagValue Add(string id)
+        {
+            var tagValue = new TagValue { Id = id };
+            Values.Add(tagValue);
+            return tagValue;
         }
 
         public IEnumerator<TagValue> GetEnumerator()

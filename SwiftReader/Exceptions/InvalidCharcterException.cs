@@ -8,8 +8,8 @@ namespace Swift
 {
     public class InvalidCharcterException : SwiftReaderException
     {
-        public InvalidCharcterException(int line, int character)
-            : base(string.Format("Invalid character at ({0}:{1}).", line, character))
+        public InvalidCharcterException(int index, int line, int character)
+            : base(string.Format("Invalid character in message #{0} at ({1}:{2}).", index, line, character))
         { }
     }
 }

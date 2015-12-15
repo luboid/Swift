@@ -8,8 +8,8 @@ namespace Swift
 {
     public class InvalidNewLineException : SwiftReaderException
     {
-        public InvalidNewLineException(int line, int character)
-            : base(string.Format("Invalid new line character sequences at ({0}:{1}).", line, character))
+        public InvalidNewLineException(int index, int line, int character)
+            : base(string.Format("Invalid new line character sequences in message #{0} at ({1}:{2}).", index, line, character))
         { }
     }
 }

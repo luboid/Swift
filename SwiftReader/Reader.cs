@@ -10,7 +10,7 @@ namespace Swift
 {
     public class Reader : IDisposable
     {
-        static readonly int READ_BUFFER_SIZE = 4096;
+        public static readonly int READ_BUFFER_SIZE = 4*1024;
 
         class ReaderState
         {
@@ -36,7 +36,7 @@ namespace Swift
                     // no close character for message to move it to stateReader.Messages
                     if (Deep != 0)
                     {
-                        throw new NotFullyEnededMessageException();
+                        throw new NotFullyEnededMessageException(Index);
                     }
                     return Stack.Count > 0 ? Stack.Pop() : null;
                 }
@@ -180,7 +180,7 @@ namespace Swift
                     if (buffer[i] == settings.Begin || buffer[i] == '{') // char with code 1 mark start of swift message
                     {
                         readerState.Ongoing = true;
-                        currentPos = i + 1;
+                        currentPos = buffer[i] == '{' ? i : i + 1;
                         find = true;
                     }
                     ++readerState.SearchStart;
@@ -192,13 +192,13 @@ namespace Swift
                         !(oths && Array.IndexOf<char>(charSet.OtherSymbols, buffer[i]) == -1))
                     {
                         if ((buffer[i] == settings.Begin || buffer[i] == settings.End || buffer[i] == '$') && readerState.Deep == 0)
-                            throw new InvalidCharcterException(readerState.Line, readerState.Pos);
+                            throw new InvalidCharcterException(readerState.Index, readerState.Line, readerState.Pos);
                     }
 
                     if (buffer[i] == 13)
                     {
                         if (newLine)
-                            throw new InvalidNewLineException(readerState.Line, readerState.Pos);
+                            throw new InvalidNewLineException(readerState.Index, readerState.Line, readerState.Pos);
 
                         newLine = true;
                     }
@@ -207,7 +207,7 @@ namespace Swift
                         if (newLine)
                         {
                             if (buffer[i] != 10)
-                                throw new InvalidNewLineException(readerState.Line, readerState.Pos);
+                                throw new InvalidNewLineException(readerState.Index, readerState.Line, readerState.Pos);
 
                             newLine = false;
                         }
@@ -219,7 +219,7 @@ namespace Swift
                         ++readerState.SecondOpen;
                         if (readerState.Deep > 2)
                         {
-                            throw new TooDeepException(readerState.Deep);
+                            throw new TooDeepException(readerState.Index, readerState.Deep);
                         }
 
                         if (readerState.Container == null)
@@ -231,17 +231,18 @@ namespace Swift
 
                         if (readerState.SecondOpen == 2)
                         {
-                            readerState.Current.Data = buffer.ToString(currentPos, i - currentPos);
+                            readerState.Container.Append(buffer.ToString(currentPos, i - currentPos));
+                            readerState.Current.Data = buffer.ToString(currentPos + 1, i - currentPos - 1);
                         }
+                        find = true;
+                        currentPos = i;
 
                         var current = new Section { StartPos = readerState.Pos };
                         readerState.Current.Sections.Add(current);
                         readerState.Current = current;
-                        currentPos = i + 1;
-                        find = true;
 
                         if (readerState.Container.Sections.Count > settings.MaxSections)
-                            throw new TooManySectionsException();
+                            throw new TooManySectionsException(readerState.Index);
                     }
                     else
                     {
@@ -254,23 +255,23 @@ namespace Swift
 
                             if (readerState.Current.Data == null)
                             {
-                                readerState.Current.Data = buffer.ToString(currentPos, i - currentPos);
+                                readerState.Current.Data = buffer.ToString(currentPos + 1, i - currentPos -1);
                             }
 
                             if (readerState.Deep == 0)
                             {
                                 if (readerState.Current.BlockId.Length != 1)
                                 {
-                                    throw new InvalidSectionTypeException(readerState.Current.BlockId, readerState.Current.StartPos, readerState.Current.EndPos);
+                                    throw new InvalidSectionTypeException(readerState.Index, readerState.Current.BlockId, readerState.Current.StartPos, readerState.Current.EndPos);
                                 }
                                 else
                                 {
                                     key = readerState.Current.BlockId[0];
                                     if (!(('1' <= key && key <= '5') || key == 'S'))
-                                        throw new InvalidSectionTypeException(readerState.Current.BlockId, readerState.Current.StartPos, readerState.Current.EndPos);
+                                        throw new InvalidSectionTypeException(readerState.Index, readerState.Current.BlockId, readerState.Current.StartPos, readerState.Current.EndPos);
                                 }
                             }
-                            readerState.Container.Append(buffer.ToString(currentPos - 1, i - currentPos + 2));
+                            readerState.Container.Append(buffer.ToString(currentPos, i - currentPos + 1));
                             readerState.Container.EndPos = readerState.Current.EndPos;
                             readerState.Current = readerState.Stack.Pop();
                             currentPos = i + 1;

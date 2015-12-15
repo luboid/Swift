@@ -8,8 +8,8 @@ namespace Swift
 {
     public class InvalidSectionTypeException : SwiftReaderException
     {
-        public InvalidSectionTypeException(string key, int startPos, int endPos)
-            : base(string.Format("Invalid section type ({0}) at ({1}:{2}).", key, startPos, endPos))
+        public InvalidSectionTypeException(int index, string key, int startPos, int endPos)
+            : base(string.Format("Invalid section type ({0}) at ({1}:{2}) in message #{3}.", key, startPos, endPos, index))
         { }
     }
 }

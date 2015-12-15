@@ -8,8 +8,8 @@ namespace Swift
 {
     public class TooManySectionsException : SwiftReaderException
     {
-        public TooManySectionsException()
-            : base("Too many sections at hight level.")
+        public TooManySectionsException(int index)
+            : base(string.Format("Too many sections at hight level in message #{0}.", index))
         { }
     }
 }

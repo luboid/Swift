@@ -8,12 +8,22 @@ namespace Swift
 {
     public class InvalidBlockException : SwiftReaderException
     {
+        Section _raw;
         InvalidBlock[] _invalidBlocks;
 
-        public InvalidBlockException(params InvalidBlock[] invalidBlocks)
+        public InvalidBlockException(Section message, params InvalidBlock[] invalidBlocks)
             : base("Invalid blocks.")
         {
+            _raw = message;
             _invalidBlocks = invalidBlocks;
+        }
+
+        public Section Raw
+        {
+            get
+            {
+                return _raw;
+            }
         }
 
         public InvalidBlock[] InvalidBlocks
@@ -29,10 +39,13 @@ namespace Swift
             get
             {
                 var buffer = new StringBuilder();
+                buffer.AppendFormat("Message #{0}, ", _raw.Index);
                 foreach (var b in _invalidBlocks)
+                {
+                    buffer.AppendFormat("Block ({0}): ", b.BlockId);
                     foreach (var m in b.Messages)
                         buffer.Append(m);
-
+                }
                 return buffer.ToString();
             }
         }

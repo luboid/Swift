@@ -27,7 +27,8 @@ namespace Swift
             if (1 != sections.Length)
             {
                 return new[] {
-                    new InvalidBlock(BLOCK_ID, sections).AddMessage("Message can have only one section of this type.")
+                    new InvalidBlock(BLOCK_ID, sections)
+                    .AddMessage(string.Format("Message can have only one block of this type /{0}/.", BLOCK_ID))
                 };
             }
 
@@ -63,7 +64,8 @@ namespace Swift
                     } };
                 }
             }
-            return new[] { new InvalidBlock(BLOCK_ID, sections).AddMessage("Invalid pattern.") };
+            return new[] { new InvalidBlock(BLOCK_ID, sections)
+                .AddMessage(string.Format("Invalid pattern of block #{0}, message #{1}.", BLOCK_ID, sections)) };
         }
     }
 }

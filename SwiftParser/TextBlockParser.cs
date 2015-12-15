@@ -14,8 +14,10 @@ namespace Swift
         {
             List<string> _rawData;
 
-            public List<string> RawData {
-                get { return _rawData; } }
+            public List<string> RawData
+            {
+                get { return _rawData; }
+            }
 
             public Field Tag { get; set; }
             public TagOption TagOption { get; set; }
@@ -62,18 +64,69 @@ namespace Swift
 
         class NameMap
         {
+            static string[] zero = new string[0];
+
+            public class NameMapItem
+            {
+                public string ValueKey { get; set; }
+                public string[] Others { get; set; }
+                public bool Aggregate { get; set; }
+                public bool Previous { get; set; }
+            }
+
+            public bool ByIndex { get; set; }
             public string Id { get; set; }
             public string Value { get; set; }
-            public Dictionary<string, string> KeyName { get; set; }
+            public Dictionary<string, NameMapItem> KeyName { get; set; }
 
             public string GetId(Match m)
             {
                 var idValue = m.Groups[Id].Value;
-                string idName;
+                NameMapItem idName;
                 if (KeyName.TryGetValue(idValue, out idName))
-                    return idName;
+                    return idName.ValueKey;
                 else
                     return "UnknownId";
+            }
+
+            public string[] GetOthers(Match m)
+            {
+                var idValue = m.Groups[Id].Value;
+                NameMapItem idName;
+                if (KeyName.TryGetValue(idValue, out idName))
+                    return idName.Others;
+                else
+                    return zero;
+            }
+
+            public string[] GetOthers(int index)
+            {
+                NameMapItem idName;
+                if (KeyName.TryGetValue(index.ToString(), out idName))
+                    return idName.Others;
+                else
+                    return zero;
+            }
+
+            public bool Grouping(int index)
+            {
+                NameMapItem idName;
+                return KeyName.TryGetValue(index.ToString(), out idName) && idName.Aggregate;
+            }
+
+            public string GroupingKey(int index)
+            {
+                NameMapItem idName;
+                if (KeyName.TryGetValue(index.ToString(), out idName))
+                    return idName.ValueKey;
+                else
+                    return null;
+            }
+
+            public bool Previous(int index)
+            {
+                NameMapItem idName;
+                return KeyName.TryGetValue(index.ToString(), out idName) && idName.Previous;
             }
 
             public string GetValue(Match m)
@@ -159,8 +212,11 @@ namespace Swift
 
             foreach (var item in parserItems)
             {
-                var lineIndex = 0; NameMap map = null; var lines = item.Lines; var counter = 0;
-                var options = item.TagOption; var tag = item.Tag;
+                var lineIndex = 0; NameMap map = null; var lines = item.Lines;
+                var options = item.TagOption; var tag = item.Tag; TagValue grouping; TagValue previous;
+
+                tag.Raw = item.Data;
+
                 // item.TagOption.CounterPostfix remove this at some poit and support SubTag field which can combine multiple values againts one key
                 if (options.Blob)
                 {
@@ -169,6 +225,7 @@ namespace Swift
                 }
                 else
                 {
+                    grouping = null; previous = null;
                     foreach (var r in options.Rows)
                     {
                         map = null;
@@ -182,9 +239,9 @@ namespace Swift
                         {
 
                             line = item[lineIndex];
-                            foreach (var regEx in r.Regex)
+                            for (int idx = 0, len = r.Regex.Length; idx < len; idx++)
                             {
-                                m = regEx.Match(line);
+                                m = r.Regex[idx].Match(line);
                                 if (m.Success)
                                 {
                                     if (map == null)
@@ -205,20 +262,61 @@ namespace Swift
                                                     }
                                                     else
                                                     {
-                                                        tag.Add(id + (options.CounterPostfix ? counter.ToString() : string.Empty), mg.Value);
+                                                        tag.Add(id, mg.Value);
                                                     }
                                                 }
                                             }
-                                            ++counter;
                                         }
                                     }
                                     else
                                     {
-                                        item.Tag.Add(
-                                            map.GetId(m) + (options.CounterPostfix ? counter.ToString() : string.Empty),
-                                            map.GetValue(m));
+                                        if (map.ByIndex)
+                                        {
+                                            if (map.Grouping(idx))
+                                            {
+                                                var groupingKey = map.GroupingKey(idx);
+                                                if (map.Previous(idx))
+                                                {
+                                                    if (previous != null && previous.Id == groupingKey)
+                                                    {
+                                                        grouping = previous;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (grouping == null || grouping.Id != groupingKey)
+                                                        grouping = tag.Add(groupingKey);
+                                                }
+                                            }
 
-                                        ++counter;
+                                            foreach (var id in map.GetOthers(idx))
+                                            {
+                                                if ((mg = m.Groups[id]).Success)
+                                                {
+                                                    if (null == grouping)
+                                                        tag.Add(id, mg.Value);
+                                                    else
+                                                        grouping.Add(id, mg.Value);
+                                                }
+                                            }
+
+                                            previous = grouping;
+                                            grouping = null;
+                                        }
+                                        else
+                                        {
+                                            item.Tag.Add(
+                                                map.GetId(m),
+                                                map.GetValue(m));
+
+                                            foreach (var id in map.GetOthers(m))
+                                            {
+                                                if ((mg = m.Groups[id]).Success)
+                                                {
+                                                    tag.Add(id, mg.Value);
+                                                }
+                                            }
+                                        }
                                     }
                                     break;
                                 }
@@ -258,20 +356,59 @@ namespace Swift
             return true;
         }
 
+        static Dictionary<int, NameMap> maps = new Dictionary<int, NameMap>();
         static NameMap DecodeNames(string names)
         {
-            //$Id:Value,1:Name,2:Address,3:CountryAndTown
-            var items = names.Substring(1).Split(new[] { ',' });
-            var item = items[0].Split(new[] { ':' });
-            var idName = item[0];
-            var valueName = item[1];
-            var keyName = new Dictionary<string, string>();
-            for (int i = 1, l = items.Length; i < l; i++)
+            NameMap map;
+            if (!maps.TryGetValue(names.GetHashCode(), out map))
             {
-                item = items[i].Split(new[] { ':' });
-                keyName.Add(item[0], item[1]);
+                //$Id:Value,1:Name,2:Address,3:CountryAndTown
+                //$,0:Item.agg:Code:Narrative,1:Item.agg.prev:Narrative
+                string[] item;
+                var idName = string.Empty;
+                var valueName = string.Empty;
+                var items = names.Substring(1).Split(new[] { ',' });
+                if (!string.IsNullOrWhiteSpace(items[0]))
+                {
+                    item = items[0].Split(new[] { ':' });
+                    idName = item[0];
+                    valueName = item[1];
+                }
+
+                var keyName = new Dictionary<string, NameMap.NameMapItem>(); string[] others; string[] options;
+                var fromIndex = 0; bool agg;
+                for (int i = 1, l = items.Length; i < l; i++)
+                {
+                    item = items[i].Split(new[] { ':' });
+                    options = item[0].Split(new[] { '.' });
+                    item[0] = options[0];
+                    agg = Array.IndexOf<string>(options, "agg") > -1;
+
+                    fromIndex = agg ? 2 : string.IsNullOrWhiteSpace(idName) ? 1 : 2;
+
+                    others = new string[item.Length - fromIndex];
+                    if (others.Length != 0)
+                    {
+                        Array.Copy(item, fromIndex, others, 0, item.Length - fromIndex);
+                    }
+
+                    keyName.Add(item[0], new NameMap.NameMapItem
+                    {
+                        ValueKey = agg || !string.IsNullOrWhiteSpace(idName) ? item[1] : null,
+                        Others = others,
+                        Aggregate = agg,
+                        Previous = Array.IndexOf<string>(options, "prev") > -1
+                    });
+                }
+                maps[names.GetHashCode()] = map = new NameMap
+                {
+                    Id = idName,
+                    Value = valueName,
+                    KeyName = keyName,
+                    ByIndex = string.IsNullOrWhiteSpace(idName) && string.IsNullOrWhiteSpace(idName)
+                };
             }
-            return new NameMap { Id = idName, Value = valueName, KeyName = keyName };
+            return map;
         }
     }
 }

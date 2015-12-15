@@ -8,8 +8,8 @@ namespace Swift
 {
     public class NotFullyEnededMessageException : SwiftReaderException
     {
-        public NotFullyEnededMessageException()
-            : base("Not fully eneded message.")
+        public NotFullyEnededMessageException(int index)
+            : base(string.Format("Not fully eneded message #{0}.", index))
         { }
     }
 }
