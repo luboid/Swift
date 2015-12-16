@@ -156,6 +156,44 @@ namespace Swift
             return message.Substring(2, message.Length - 5).Split(new[] { "\r\n" }, StringSplitOptions.None);
         }
 
+        public static bool ParseHeader(Tag tag, string data)
+        {
+            var tagDefinition = Factory.Tag(tag.Id);
+            if (tagDefinition != null)
+            {
+                var regEx = tagDefinition.Rows[0].Regex[0];
+                var names = tagDefinition.Rows[0].ValueNames;
+                var m = regEx.Match(data);
+                if (m.Success)
+                {
+                    if (null == names || 0 == names.Length)
+                    {
+                        tag.Value = m.Value;
+                    }
+                    else
+                    {
+                        foreach (var n in names)
+                        {
+                            var g = m.Groups[n];
+                            if (g.Success)
+                            {
+                                tag[n] = g.Value;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                tag.Value = data;
+            }
+            return true;
+        }
+
         public static bool Parse(string data, out string errorMessage, out IList<Tag> tags)
         {
             errorMessage = null;
@@ -246,7 +284,7 @@ namespace Swift
                                 {
                                     if (map == null)
                                     {
-                                        if (r.ValueNames == null)
+                                        if (r.ValueNames == null || 0 == r.ValueNames.Length)
                                         {
                                             tag.Value = m.Value;
                                         }
@@ -256,14 +294,7 @@ namespace Swift
                                             {
                                                 if ((mg = m.Groups[id]).Success)
                                                 {
-                                                    if (id == "Value")
-                                                    {
-                                                        tag.Value = mg.Value;
-                                                    }
-                                                    else
-                                                    {
-                                                        tag.Add(id, mg.Value);
-                                                    }
+                                                    tag.Add(id, mg.Value);
                                                 }
                                             }
                                         }

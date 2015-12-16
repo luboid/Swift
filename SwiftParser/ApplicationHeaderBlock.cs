@@ -59,8 +59,8 @@ namespace Swift
                         MessageType = grps["MessageType"].Value,
                         ReceiversAddress = grps["ReceiversAddress"].Value,
                         Priority = grps["Priority"].Value[0],
-                        DeliveryMonitoring = grps["DeliveryMonitoring"].Value[0],
-                        ObsolescencePeriod = grps["ObsolescencePeriod"].Value
+                        DeliveryMonitoring = grps["DeliveryMonitoring"].Success ? grps["DeliveryMonitoring"].Value[0] : default(char),
+                        ObsolescencePeriod = grps["ObsolescencePeriod"].Success ? grps["ObsolescencePeriod"].Value : default(string)
                     } };
                 }
             }

@@ -31,17 +31,25 @@ namespace Swift
 
         public static IBaseBlock[] Create(Section[] sections)
         {
-            TextBlock b = new TextBlock(); Section sub; List<Section> list;
+            TextBlock b = new TextBlock();
             foreach (var section in sections)
             {
                 if (section.NoData)// header section
                 {
-                    // here can try to validate data and create specific with more detailed information
-                    list = section.Sections;
+                    var list = section.Sections;
                     for (int i = 0, l = list.Count; i < l; i++)
                     {
-                        sub = list[i];
-                        b.List.Add(new Tag(sub.BlockId, i) { Value = sub.Data });
+                        var sub = list[i];
+                        var t = new Tag(sub.BlockId, i);
+                        if (TextBlockParser.ParseHeader(t, sub.Data))
+                        {
+                            b.List.Add(t);
+                        }
+                        else
+                        {
+                            return new[] { new InvalidBlock(BLOCK_ID, sections)
+                            .AddMessage(string.Format("Invalid header block {0}.", sub.BlockId)) };
+                        }
                     }
                 }
                 else

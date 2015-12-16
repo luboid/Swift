@@ -9,7 +9,7 @@ namespace Swift
 {
     public class ApplicationHeaderBlockI : ApplicationHeaderBlock
     {
-        public static readonly Regex Pattern = new Regex("(I)(?<MessageType>[0-9]{3})(?<ReceiversAddress>[0-9A-Z]{12})(?<Priority>[SNU]{1})(?<DeliveryMonitoring>[1-3]{1})(?<ObsolescencePeriod>[0-9]{3})", RegexOptions.Compiled);
+        public static readonly Regex Pattern = new Regex(@"^(I)(?<MessageType>[0-9]{3})(?<ReceiversAddress>[0-9A-Z]{12})(?<Priority>[SNU]{1})(?<DeliveryMonitoring>[1-3]{1})?(?<ObsolescencePeriod>\d{3})?$", RegexOptions.Compiled);
 
         public ApplicationHeaderBlockI()
         {

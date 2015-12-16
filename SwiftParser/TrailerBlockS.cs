@@ -35,8 +35,16 @@ namespace Swift
                 for (int j = 0, jl = headers.Count; j < jl; j++)
                 {
                     var header = headers[j];
-                    // here can try to validate data and create specific with more detailed information
-                    b.List.Add(new Tag(header.BlockId, j) { Value = header.Data });
+                    var t = new Tag(header.BlockId, j);
+                    if (TextBlockParser.ParseHeader(t, header.Data))
+                    {
+                        b.List.Add(t);
+                    }
+                    else
+                    {
+                        return new[] { new InvalidBlock(BLOCK_ID, sections)
+                            .AddMessage(string.Format("Invalid header block {0}.", header.BlockId)) };
+                    }
                 }
             }
             return new[] { b };

@@ -10,7 +10,7 @@ namespace Swift
     public class BasicHeaderBlock : IBaseBlock
     {
         public static readonly string BLOCK_ID = "1";
-        public static readonly Regex Pattern = new Regex("([AFL]{1})(01|21)([0-9A-Z]{12})(\\d{4})(\\d{6})", RegexOptions.Compiled);
+        public static readonly Regex Pattern = new Regex("^([AFL]{1})(01|21)([0-9A-Z]{12})(\\d{4})(\\d{6})$", RegexOptions.Compiled);
 
         public char ApplicationID { get; set; }
         public string ServiceID { get; set; }

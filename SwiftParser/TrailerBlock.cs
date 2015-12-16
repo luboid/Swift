@@ -29,14 +29,23 @@ namespace Swift
         public static IBaseBlock[] Create(Section[] sections)
         {
             var b = new TrailerBlock();
+
             for (int i = 0, l = sections.Length; i < l; i++)
             {
                 var headers = sections[i].Sections;
                 for (int j = 0, jl = headers.Count; j < jl; j++)
                 {
                     var header = headers[j];
-                    // here can try to validate data and create specific with more detailed information
-                    b.List.Add(new Tag(header.BlockId, j) { Value = header.Data });
+                    var t = new Tag(header.BlockId, j);
+                    if (TextBlockParser.ParseHeader(t, header.Data))
+                    {
+                        b.List.Add(t);
+                    }
+                    else
+                    {
+                        return new[] { new InvalidBlock(BLOCK_ID, sections)
+                            .AddMessage(string.Format("Invalid header block {0}.", header.BlockId)) };
+                    }
                 }
             }
             return new[] { b };

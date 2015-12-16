@@ -69,6 +69,17 @@ namespace Swift
 
         static Factory()
         {
+            // Header tag 
+            Tag("177", "Date&Time of sending", new TagOption
+            {
+                Letter = "",
+                Rows = new[] {
+                    new TagOptionRow {
+                        Regex = new[] { new Regex(@"^(?<Value>\d{6})(?<Time>\d{4})$", RegexOptions.Compiled) },
+                        ValueNames = new[] { "Value", "Time" }
+                    }
+                }
+            });
             Tag("13", "Time Indication", new TagOption
             {
                 Letter = "C",
@@ -1377,7 +1388,7 @@ namespace Swift
                     .AddMessage(string.Format("Can't find handler for section {0}.", key)) };
         }
 
-        public static TagOption Tag(string tag, string letter)
+        public static TagOption Tag(string tag, string letter = null)
         {
             TagConfig cfg; letter = letter ?? string.Empty;
             if (tags.TryGetValue(tag, out cfg))
