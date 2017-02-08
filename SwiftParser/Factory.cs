@@ -69,7 +69,7 @@ namespace Swift
 
         static Factory()
         {
-            // Header tag 
+            // Header tag
             Tag("177", "Date&Time of sending", new TagOption
             {
                 Letter = "",
@@ -894,12 +894,12 @@ namespace Swift
                     Letter = "B",
                     Rows = new[] {
                         new TagOptionRow {
-                            Regex = new[] { new Regex(@"^\/(?<Value>[A-Z]{1,8})\/(?<Country>[A-Z]{2})((?:\/\/)(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,29}))?$", RegexOptions.Compiled) },
+                            Regex = new[] { new Regex(@"^((\/(?<Value>[A-Z]{1,8})\/(?<Country>[A-Z]{2})((?:\/\/)(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,29}))?)|(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35}))$", RegexOptions.Compiled) },
                             ValueNames = new[] { "Value", "Country", "Narrative" }
                         },
                         new TagOptionRow {
                             Lines = 2,
-                            Regex = new[] { new Regex(@"^(?:\/\/)(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,33})$", RegexOptions.Compiled) },
+                            Regex = new[] { new Regex(@"^(((?:\/\/)(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,33}))|(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35}))$", RegexOptions.Compiled) },
                             ValueNames = new[] { "Narrative" }
                         }
                     }
