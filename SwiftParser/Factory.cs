@@ -220,6 +220,13 @@ namespace Swift
                         },
                         new TagOptionRow {
                             Regex = new[] {
+                                new Regex(@"^1\/(?<Name>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,33})$")
+                            },
+                            Optional = true,
+                            ValueNames = new[] { "Name" }
+                        },
+                        new TagOptionRow {
+                            Regex = new[] {
                                 new Regex(@"^(?<Id>[245678]{1})\/(?<Value>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,33})$"),
                                 new Regex(@"^(?<Id>3)\/(?<Value>((?<Country>[A-Z]{2})((?:\/)(?<Town>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,30}))?)|(?<Town>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,33}))$")
                             },
