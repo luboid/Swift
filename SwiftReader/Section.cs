@@ -74,7 +74,7 @@ namespace Swift
         {
             get
             {
-                return _sections == null && _sections.Count != 0;
+                return _sections != null && _sections.Count > 0;
             }
         }
 

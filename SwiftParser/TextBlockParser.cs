@@ -232,7 +232,17 @@ namespace Swift
                     }
                     else
                     {
-                        errorMessage = string.Format("Invalid field definition at line {0}.", i + 1);
+                        // https://coding.pstodulka.com/2015/01/10/anatomy-of-a-swift-message/
+                        errorMessage = string.Format("Invalid field definition at line {0}. Row can't start colon(:).", i + 1);
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (line.StartsWith("-"))
+                    {
+                        // https://coding.pstodulka.com/2015/01/10/anatomy-of-a-swift-message/
+                        errorMessage = string.Format("Invalid field definition at line {0}. Row can't start hyphen(-).", i + 1);
                         return false;
                     }
                 }

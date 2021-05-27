@@ -20,7 +20,7 @@ namespace Swift
             CharSets.Add('H', CharSets['N'] + "ABCDEF");
             CharSets.Add('D', CharSets['N'] + ",");
             CharSets.Add('E', " ");
-            CharSets.Add('X', CharSets['C'] + "/\\-?().,'+ ");
+            CharSets.Add('X', CharSets['C'] + "a-z" + "/\\-?().,'+ ");
             CharSets.Add('Z', CharSets['X'] + "=:!\"%&*<>;{@#_ ");
         }
 
@@ -79,7 +79,7 @@ namespace Swift
                     if (bOptional) sField = "(" + sField + ")?";
 
                     //Lookup the regex conversion of acceptable characters for this SWIFT character
-                    //set and replace accordingly.  
+                    //set and replace accordingly.
                     //e.g. 4!N is now [0-9]{4,4}
                     sField = sField.Replace(cCharacterSet.ToString(), "[" + CharSets[cCharacterSet] + "]");
 

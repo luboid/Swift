@@ -10,7 +10,7 @@ namespace Swift
 {
     public class Reader : IDisposable
     {
-        public static readonly int READ_BUFFER_SIZE = 4*1024;
+        public static readonly int READ_BUFFER_SIZE = 4 * 1024;
 
         class ReaderState
         {
@@ -137,19 +137,17 @@ namespace Swift
                 if (searchIndex > -1)
                 {
                     this.buffer.Remove(0, searchIndex);
-                    readerState.StartPos = this.buffer.Length;
                 }
-                else
-                {
-                    readerState.StartPos = 0;
-                }
+
+                readerState.StartPos = this.buffer.Length;
 
                 if ((m = readerState.Pop()) != null)
                 {
                     return m;
                 }
 
-            } while (read != 0);
+            }
+            while (read != 0);
 
 
             return readerState.Pop(true);
@@ -255,7 +253,7 @@ namespace Swift
 
                             if (readerState.Current.Data == null)
                             {
-                                readerState.Current.Data = buffer.ToString(currentPos + 1, i - currentPos -1);
+                                readerState.Current.Data = buffer.ToString(currentPos + 1, i - currentPos - 1);
                             }
 
                             if (readerState.Deep == 0)

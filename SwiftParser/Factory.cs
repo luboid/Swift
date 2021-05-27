@@ -70,6 +70,562 @@ namespace Swift
         static Factory()
         {
             // Header tag
+            Tag("42", "Drafts at",
+                new TagOption
+                {
+                    Description = "Drafts at",
+                    Letter = "C",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new[] { new Regex(@"^(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35})$", RegexOptions.Compiled) },
+                            Lines = 3,
+                            ValueNames = new[] { "Narrative" }
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Description = "Drawee",
+                    Letter = "A",
+                    Rows = new[] {
+                        new TagOptionRow
+                        {
+                            Regex = new [] { new Regex(@"^(?<PartyIdentifier>(\/[A-Z]{1,1})?(\/[A-Z0-9a-z\/\-?().,'+: ]{1,34})?)?$", RegexOptions.Compiled) },
+                            ValueNames = new [] { "PartyIdentifier" },
+                            Optional = true
+                        },
+                        new TagOptionRow {
+                            Regex = new[] { new Regex("^(?<IdentifierCode>[A-Z]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3})?)$", RegexOptions.Compiled) },
+                            ValueNames = new [] { "IdentifierCode" }
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Letter = "D",
+                    Rows = new[] {
+                        new TagOptionRow
+                        {
+                            Regex = new [] { new Regex(@"^(?<PartyIdentifier>(\/[A-Z]{1,1})?(\/[A-Z0-9a-z\/\-?().,'+: ]{1,34})?)?$", RegexOptions.Compiled) },
+                            ValueNames = new [] { "PartyIdentifier" },
+                            Optional = true
+                        },
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^(?<NameAddress>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35})$", RegexOptions.Compiled) },
+                            Lines = 4,
+                            ValueNames = new[] { "NameAddress" }
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Description = "Mixed Payment Details",
+                    Letter = "M",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new[] { new Regex(@"^(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35})$", RegexOptions.Compiled) },
+                            Lines = 4,
+                            ValueNames = new[] { "Narrative" }
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Description = "Negotiation/Deferred Payment Details",
+                    Letter = "P",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new[] { new Regex(@"^(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35})$", RegexOptions.Compiled) },
+                            Lines = 4,
+                            ValueNames = new[] { "Narrative" }
+                        }
+                    }
+                }
+            );
+            Tag("43", "Partial Shipments",
+                new TagOption()
+                {
+                    Description = "Partial Shipments",
+                    Letter = "A",
+                    Rows = new[] {
+                        new TagOptionRow
+                        {
+                            Regex = new[] { new Regex("^(?<Code>ALLOWED|CONDITIONAL|NOT ALLOWED)$", RegexOptions.Compiled) },
+                            ValueNames = new [] { "Code" }
+                        }
+                    }
+                },
+                new TagOption()
+                {
+                    Letter = "T",
+                    Description = "Transhipment",
+                    Rows = new[] {
+                        new TagOptionRow
+                        {
+                            Regex = new[] { new Regex("^(?<Code>ALLOWED|CONDITIONAL|NOT ALLOWED)$", RegexOptions.Compiled) },
+                            ValueNames = new [] { "Code" }
+                        }
+                    }
+                },
+                new TagOption()
+                {
+                    Letter = "P",
+                    Description = "Partial Shipments",
+                    Rows = new[] {
+                        new TagOptionRow
+                        {
+                            Regex = new[] { new Regex("^(?<Code>ALLOWED|CONDITIONAL|NOT ALLOWED)$", RegexOptions.Compiled) },
+                            ValueNames = new [] { "Code" }
+                        }
+                    }
+                }
+            );
+
+            Tag("44", "Place of Taking in Charge/Dispatch from .../Place of Receipt",
+                new TagOption()
+                {
+                    Letter = "A",
+                    Description = "Place of Taking in Charge/Dispatch from .../Place of Receipt",
+                    Rows = new[] {
+                        new TagOptionRow
+                        {
+                            Regex = new[] { new Regex(@"^(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,65})$", RegexOptions.Compiled) },
+                            ValueNames = new[] { "Narrative" }
+                        }
+                    }
+                },
+                new TagOption()
+                {
+                    Letter = "E",
+                    Description = "Port of Loading/Airport of Departure",
+                    Rows = new[] {
+                        new TagOptionRow
+                        {
+                            Regex = new[] { new Regex(@"^(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,65})$", RegexOptions.Compiled) },
+                            ValueNames = new[] { "Narrative" }
+                        }
+                    }
+                },
+                new TagOption()
+                {
+                    Letter = "F",
+                    Description = "Port of Discharge/Airport of Destination",
+                    Rows = new[] {
+                        new TagOptionRow
+                        {
+                            Regex = new[] { new Regex(@"^(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,65})$", RegexOptions.Compiled) },
+                            ValueNames = new[] { "Narrative" }
+                        }
+                    }
+                },
+                new TagOption()
+                {
+                    Letter = "B",
+                    Description = "Place of Final Destination/For Transportation to .../Place of Delivery",
+                    Rows = new[] {
+                        new TagOptionRow
+                        {
+                            Regex = new[] { new Regex(@"^(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,65})$", RegexOptions.Compiled) },
+                            ValueNames = new[] { "Narrative" }
+                        }
+                    }
+                },
+                new TagOption()
+                {
+                    Letter = "C",
+                    Description = "Place of Final Destination/For Transportation to .../Place of Delivery",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new [] { new Regex(@"^(?<Date>[0-9]{6,6})$", RegexOptions.Compiled) },
+                            ValueNames = new [] { "Date" }
+                        }
+                    }
+                },
+                new TagOption()
+                {
+                    Letter = "D",
+                    Description = "Shipment Period",
+                    Rows = new[] {
+                        new TagOptionRow
+                        {
+                            Regex = new[] { new Regex(@"^(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,65})$", RegexOptions.Compiled) },
+                            Lines = 6,
+                            ValueNames = new[] { "Narrative" }
+                        }
+                    }
+                }
+            );
+
+            Tag("45", "Description of Goods and/or Services",
+                new TagOption()
+                {
+                    Letter = "A",
+                    Description = "Description of Goods and/or Services",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new [] {
+                                new Regex(@"^(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,65})$")
+                            },
+                            ValueNames = new[] { "Narrative" },
+                            Lines = 100
+                        }
+                    }
+                },
+                new TagOption()
+                {
+                    Letter = "B",
+                    Description = "Description of Goods and/or Services",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new [] { new Regex(@"^\/(?<Code>(ADD|DELETE|REPALL))\/(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,57})$") },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Narrative" }
+                        },
+                        new TagOptionRow
+                        {
+                            Regex = new [] {
+                                new Regex(@"^\/(?<Code>(ADD|DELETE|REPALL))\/(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,57})$"),
+                                new Regex(@"^(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,65})$")
+                            },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Narrative,1.agg.prev:Item:Narrative" },
+                            Lines = 99
+                        }
+                    }
+                }
+            );
+            Tag("46", "Documents Required",
+                new TagOption()
+                {
+                    Letter = "A",
+                    Description = "Documents Required",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new [] {
+                                new Regex(@"^(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,65})$")
+                            },
+                            ValueNames = new[] { "Narrative" },
+                            Lines = 100
+                        }
+                    }
+                },
+                new TagOption()
+                {
+                    Letter = "B",
+                    Description = "Documents Required",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new [] { new Regex(@"^\/(?<Code>(ADD|DELETE|REPALL))\/(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,57})$") },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Narrative" }
+                        },
+                        new TagOptionRow
+                        {
+                            Regex = new [] {
+                                new Regex(@"^\/(?<Code>(ADD|DELETE|REPALL))\/(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,57})$"),
+                                new Regex(@"^(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,65})$")
+                            },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Narrative,1.agg.prev:Item:Narrative" },
+                            Lines = 99
+                        }
+                    }
+                }
+            );
+
+            Tag("47", "Additional Conditions",
+               new TagOption()
+               {
+                   Letter = "A",
+                   Description = "Additional Conditions",
+                   Rows = new[]
+                   {
+                        new TagOptionRow
+                        {
+                            Regex = new [] {
+                                new Regex(@"^(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,65})$")
+                            },
+                            ValueNames = new[] { "Narrative" },
+                            Lines = 100
+                        }
+                   }
+               },
+               new TagOption()
+               {
+                   Letter = "B",
+                   Description = "Additional Conditions",
+                   Rows = new[]
+                   {
+                        new TagOptionRow
+                        {
+                            Regex = new [] { new Regex(@"^\/(?<Code>(ADD|DELETE|REPALL))\/(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,57})$") },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Narrative" }
+                        },
+                        new TagOptionRow
+                        {
+                            Regex = new [] {
+                                new Regex(@"^\/(?<Code>(ADD|DELETE|REPALL))\/(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,57})$"),
+                                new Regex(@"^(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,65})$")
+                            },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Narrative,1.agg.prev:Item:Narrative" },
+                            Lines = 99
+                        }
+                   }
+               }
+           );
+
+            Tag("48", null,
+                new TagOption()
+                {
+                    Letter = "",
+                    Description = "Period for Presentation in Days",
+                    Rows = new[] {
+                        new TagOptionRow
+                        {
+                            Regex = new [] { new Regex(@"^(?<Days>[0-9]{1,3})(/(?<Narrative>[A-Z0-9a-z\/\-?().,'+ ]{1,35}))?$", RegexOptions.Compiled) },
+                            ValueNames = new[] { "Days", "Narrative" }
+                        },
+                    },
+                });
+
+            Tag("49", "",
+                new TagOption()
+                {
+                    Letter = "",
+                    Description = "Confirmation Instructions",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new[] { new Regex("^(?<Instruction>CONFIRM|MAY ADD|WITHOUT)$", RegexOptions.Compiled) },
+                            ValueNames = new[] { "Instruction" }
+                        }
+                    }
+
+                },
+                new TagOption()
+                {
+                    Letter = "G",
+                    Description = "Special Payment Conditions for Beneficiary",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new [] {
+                                new Regex(@"^(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,65})$")
+                            },
+                            ValueNames = new[] { "Narrative" },
+                            Lines = 100
+                        }
+                    }
+                },
+                new TagOption()
+                {
+                    Letter = "H",
+                    Description = "Special Payment Conditions for Receiving Bank",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new [] {
+                                new Regex(@"^(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,65})$")
+                            },
+                            ValueNames = new[] { "Narrative" },
+                            Lines = 100
+                        }
+                    }
+                },
+                new TagOption()
+                {
+                    Letter = "M",
+                    Description = "Special Payment Conditions for Beneficiary",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new [] { new Regex(@"^\/(?<Code>(ADD|DELETE|REPALL))\/(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,57})$") },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Narrative" }
+                        },
+                        new TagOptionRow
+                        {
+                            Regex = new [] {
+                                new Regex(@"^\/(?<Code>(ADD|DELETE|REPALL))\/(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,57})$"),
+                                new Regex(@"^(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,65})$")
+                            },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Narrative,1.agg.prev:Item:Narrative" },
+                            Lines = 99
+                        }
+                    }
+                },
+                new TagOption()
+                {
+                    Letter = "N",
+                    Description = "Special Payment Conditions for Receiving Bank",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new [] { new Regex(@"^\/(?<Code>(ADD|DELETE|REPALL))\/(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,57})$") },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Narrative" }
+                        },
+                        new TagOptionRow
+                        {
+                            Regex = new [] {
+                                new Regex(@"^\/(?<Code>(ADD|DELETE|REPALL))\/(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,57})$"),
+                                new Regex(@"^(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,65})$")
+                            },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Narrative,1.agg.prev:Item:Narrative" },
+                            Lines = 99
+                        }
+                    }
+                }
+            );
+
+            Tag("41", "Available With ... By ...",
+                new TagOption
+                {
+                    Letter = "A",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] { new Regex("^(?<IdentifierCode>[A-Z]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3})?)$", RegexOptions.Compiled) },
+                            ValueNames = new [] { "IdentifierCode" }
+                        },
+                        new TagOptionRow
+                        {
+                            Regex = new[] { new Regex("^(?<Code>BY ACCEPTANCE|BY DEF PAYMENT|BY MIXED PYMT|BY NEGOTIATION|BY PAYMENT)$", RegexOptions.Compiled) },
+                            ValueNames = new [] { "Code" }
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Letter = "D",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] {
+                                new Regex(@"^(?<Name>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "Name" }
+                        },
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^(?<Address>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35})$", RegexOptions.Compiled) },
+                            Lines = 3,
+                            ValueNames = new[] { "Address" }
+                        },
+                        new TagOptionRow
+                        {
+                            Regex = new[] { new Regex("^(?<Code>BY ACCEPTANCE|BY DEF PAYMENT|BY MIXED PYMT|BY NEGOTIATION|BY PAYMENT)$", RegexOptions.Compiled) },
+                            ValueNames = new [] { "Code" }
+                        }
+                    }
+                }
+            );
+            Tag("22", "Purpose of Message",
+                new TagOption
+                {
+                    Letter = "A",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] { new Regex("^(ACNF|ADVI|ISSU)$", RegexOptions.Compiled) }
+                        }
+                    }
+                }
+            );
+
+            Tag("40", "Form of Documentary Credit",
+                new TagOption
+                {
+                    Letter = "A",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] { new Regex("^(IRREVOCABLE|IRREVOCABLE TRANSFERABLE|IRREVOCABLE STANDBY|IRREVOC TRANS STANDBY)$", RegexOptions.Compiled) }
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Description = "Applicable Rules",
+                    Letter = "C",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^(?<ApplicableRules>ISPR|NONE|OTHR|URDG)(\/{0,1})(?<Narrative>[A-Z0-9a-z\-?().,'+ ]{1,35})?", RegexOptions.Compiled) },
+                            ValueNames = new [] { "ApplicableRules", "Narrative" }
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Description = "Applicable Rules",
+                    Letter = "E",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^(?<ApplicableRules>EUCP LATEST VERSION|EUCPURR LATEST VERSION|ISP LATEST VERSION|OTHR|UCP LATEST VERSION|UCPURR LATEST VERSION)(\/?)(?<Narrative>[A-Z0-9a-z\-?().,'+ ]{1,35})?", RegexOptions.Compiled) },
+                            ValueNames = new [] { "ApplicableRules", "Narrative" }
+                        }
+                    }
+                }
+            );
+            Tag("27", "Sequence of Total", new TagOption()
+            {
+                Rows = new[]
+                {
+                    new TagOptionRow
+                    {
+                        Regex = new [] { new Regex(@"^(?<Number>[0-9]{1,1})/(?<Total>[0-9]{1,1})$", RegexOptions.Compiled) },
+                        ValueNames = new [] {"Number", "Total" }
+                    }
+                }
+            });
+            Tag("30", "Date", new TagOption()
+            {
+                Rows = new[]
+                {
+                    new TagOptionRow
+                    {
+                        Regex = new [] { new Regex(@"^(?<Date>[0-9]{6,6})$", RegexOptions.Compiled) },
+                        ValueNames = new [] { "Date" }
+                    }
+                }
+            });
+            Tag("31", "Date of Issue or Request to Issue",
+                new TagOption()
+                {
+                    Letter = "C",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new [] { new Regex(@"^(?<Date>[0-9]{6,6})$", RegexOptions.Compiled) },
+                            ValueNames = new [] { "Date" }
+                        }
+                    },
+                },
+                new TagOption()
+                {
+                    Letter = "D",
+                    Description = "Date and Place of Expiry",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new [] { new Regex(@"^(?<Date>[0-9]{6,6})(?<Place>[A-Z0-9a-z\/\-?().,'+: ]{1,29})$", RegexOptions.Compiled) }
+                        }
+                    },
+                }
+            );
+
             Tag("177", "Date&Time of sending", new TagOption
             {
                 Letter = "",
@@ -80,21 +636,32 @@ namespace Swift
                     }
                 }
             });
-            Tag("13", "Time Indication", new TagOption
-            {
-                Letter = "C",
-                Rows = new[] {
-                    new TagOptionRow {
-                        Regex = new[] { new Regex(@"^\/(?<Value>CLSTIME|RNCTIME|SNDTIME)\/(?<TimeIndication>\d{4})(?<TimeOffset>[+-]{1}\d{4})$", RegexOptions.Compiled) },
-                        ValueNames = new[] { "Value", "TimeIndication", "TimeOffset" }
+            Tag("13", "Time Indication",
+                new TagOption
+                {
+                    Letter = "C",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^\/(?<Value>CLSTIME|RNCTIME|SNDTIME|FROTIME|TILTIME)\/(?<TimeIndication>\d{4})(?<TimeOffset>[+-]{1}\d{4})$", RegexOptions.Compiled) },
+                            ValueNames = new[] { "Value", "TimeIndication", "TimeOffset" }
+                        }
                     }
-                }
-            });
+                },
+                new TagOption
+                {
+                    Letter = "D",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^\/(?<Date>\d{6})(?<Time>\d{4})(?<Offset>[+-]{1}\d{4})$", RegexOptions.Compiled) },
+                            ValueNames = new[] { "Date", "Time", "Offset" }
+                        }
+                    }
+                });
             Tag("20", "Sender's Reference", new TagOption
             {
                 Rows = new[] {
                     new TagOptionRow {
-                        Regex = new[] { new Regex(@"^[A-Z0-9/\-?().,'+ ]{1,16}$", RegexOptions.Compiled) } //m.Value
+                        Regex = new[] { new Regex(@"^[A-Za-z0-9/\-?().,'+ ]{1,16}$", RegexOptions.Compiled) } //m.Value
                     }
                 }
             });
@@ -102,11 +669,34 @@ namespace Swift
             {
                 Rows = new[] {
                     new TagOptionRow {
-                        Regex = new[] { new Regex(@"^[A-Z0-9/\-?().,'+ ]{1,16}$", RegexOptions.Compiled) } //m.Value
+                        Regex = new[] { new Regex(@"^[A-Za-z0-9/\-?().,'+ ]{1,16}$", RegexOptions.Compiled) } //m.Value
                     }
                 }
             });
             Tag("23", "Bank Operation Code",
+                new TagOption
+                {
+                    Description = "Further Identification",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] { new Regex("^(?<Value>ISSUE|REQUEST)$", RegexOptions.Compiled) },
+                            ValueNames = new [] { "Value" },
+                            Optional = true
+                        },
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^[A-Za-z0-9/\-?().,'+ ]{1,16}$", RegexOptions.Compiled) },
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Letter = "S",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] { new Regex("^(CANCEL)$", RegexOptions.Compiled) }
+                        }
+                    }
+                },
                 new TagOption
                 {
                     Letter = "B",
@@ -126,20 +716,46 @@ namespace Swift
                         }
                     }
                 });
-            Tag("25", "Account Identification", new TagOption
-            {
-                Rows = new[] {
-                    new TagOptionRow {
-                        Regex = new[] { new Regex(@"^(?<Value>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35})$", RegexOptions.Compiled) },
+            Tag("25", "Account Identification",
+                new TagOption
+                {
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^(?<Value>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35})$", RegexOptions.Compiled) },
+                        }
                     }
-                }
-            });
+                },
+                new TagOption
+                {
+                    Letter = "P",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^(?<Value>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35})$", RegexOptions.Compiled) },
+                            ValueNames = new[] { "Value" }
+                        },
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^(?<IdentifierCode>(?<Bank>[A-Z]{4})(?<Country>[A-Z]{2})(?<Location>[0-9A-Z]{2})(?<Branch>([0-9A-Z]{3}|)))$", RegexOptions.Compiled) },
+                            ValueNames = new[] { "IdentifierCode", "Bank", "Country", "Location", "Branch" }
+                        }
+                    }
+
+                });
             Tag("26", "Transaction Type Code", new TagOption
             {
                 Letter = "T",
                 Rows = new[] {
                     new TagOptionRow {
                         Regex = new[] { new Regex(@"^([0-9A-Z]{3})$", RegexOptions.Compiled) }//m.Value
+                    }
+                }
+            }, new TagOption
+            {
+                Description = "Number of Amendment",
+                Letter = "E",
+                Rows = new[]
+                {
+                    new TagOptionRow {
+                        Regex = new[] { new Regex(@"^[0-9]{1,3}$", RegexOptions.Compiled) }//m.Value
                     }
                 }
             });
@@ -153,26 +769,52 @@ namespace Swift
                     }
                 }
             });
-            Tag("32", "Value Date/Currency/Interbank Settled Amount", new TagOption
-            {
-                Letter = "A",
-                Rows = new[] {
-                    new TagOptionRow {
-                        Regex = new[] { new Regex(@"^(?<ValueDate>\d{6})(?<Currency>[A-Z]{3})(?<Value>[\d,]{1,15})$", RegexOptions.Compiled) },
-                        ValueNames = new[] { "ValueDate", "Currency", "Value" }
+            Tag("32", "Value Date/Currency/Interbank Settled Amount",
+                new TagOption
+                {
+                    Letter = "A",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^(?<ValueDate>\d{6})(?<Currency>[A-Z]{3})(?<Value>[\d,]{1,15})$", RegexOptions.Compiled) },
+                            ValueNames = new[] { "ValueDate", "Currency", "Value" }
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Description = "Increase of Documentary Credit Amount",
+                    Letter = "B",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^(?<Currency>[A-Z]{3})(?<Value>[\d,]{1,15})$", RegexOptions.Compiled) },
+                            ValueNames = new[] { "Currency", "Value" }
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Description = "Amount of Charges",
+                    Letter = "D",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^(?<ValueDate>\d{6})(?<Currency>[A-Z]{3})(?<Value>[\d,]{1,15})$", RegexOptions.Compiled) },
+                            ValueNames = new[] { "ValueDate", "Currency", "Value" }
+                        }
                     }
                 }
-            });
-            Tag("33", "Currency/Instructed Amount", new TagOption
-            {
-                Letter = "B",
-                Rows = new[] {
-                    new TagOptionRow {
-                        Regex = new[] { new Regex(@"^(?<Currency>[A-Z]{3})(?<Value>[\d,]{1,15})$", RegexOptions.Compiled) },
-                        ValueNames = new[] { "Currency", "Value" }
+            );
+            Tag("33", "Currency/Instructed Amount",
+                new TagOption
+                {
+                    Letter = "B",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^(?<Currency>[A-Z]{3})(?<Value>[\d,]{1,15})$", RegexOptions.Compiled) },
+                            ValueNames = new[] { "Currency", "Value" }
+                        }
                     }
                 }
-            });
+            );
             Tag("36", "Exchange Rate", new TagOption
             {
                 Rows = new[] {
@@ -181,7 +823,45 @@ namespace Swift
                     }
                 }
             });
+            Tag("39", "Percentage Credit Amount Tolerance",
+                new TagOption
+                {
+                    Letter = "A",
+                    Rows = new[] {
+                        new TagOptionRow
+                        {
+                            Regex = new [] {new Regex(@"^(?<Tolerance1>[0-9]{1,2})/(?<Tolerance2>[0-9]{1,2})$", RegexOptions.Compiled) },
+                            ValueNames = new [] { "Tolerance1", "Tolerance2" }
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Letter = "C",
+                    Rows = new[] {
+                        new TagOptionRow
+                        {
+                            Regex = new[] { new Regex(@"^(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35})$", RegexOptions.Compiled) },
+                            Lines = 4,
+                            ValueNames = new[] { "Narrative" }
+                        }
+                    }
+                }
+            );
             Tag("50", "Ordering Customer",
+                new TagOption
+                {
+                    Description = "Applicant Details",
+                    Letter = "",
+                    Rows = new[]
+                    {
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^(?<NameAddress>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35})$", RegexOptions.Compiled) },
+                            Lines = 4,
+                            ValueNames = new[] { "NameAddress" }
+                        }
+                    }
+                },
                 new TagOption
                 {
                     Letter = "A",
@@ -198,6 +878,24 @@ namespace Swift
                                 new Regex(@"^(?<IdentifierCode>[A-Z]{4}(?<Country>[A-Z]{2})[0-9A-Z]{2}(?:[0-9A-Z]{3}|))$", RegexOptions.Compiled)
                             },
                             ValueNames = new[] { "IdentifierCode", "Country" }
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Letter = "B",
+                    Rows = new[]
+                    {
+                        new TagOptionRow {
+                            Regex = new[] {
+                                new Regex(@"^(?<Name>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "Name" }
+                        },
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^(?<Address>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35})$", RegexOptions.Compiled) },
+                            Lines = 3,
+                            ValueNames = new[] { "Address" }
                         }
                     }
                 },
@@ -259,26 +957,46 @@ namespace Swift
                         }
                     }
                 });
-            Tag("51", "Sending Institution", new TagOption
-            {
-                Letter = "A",
-                Rows = new[] {
-                    new TagOptionRow {
-                        Regex = new[] {
-                            new Regex(@"^(?:\/)(?<Value>[A-Z]{1})$", RegexOptions.Compiled),
-                            new Regex(@"^(?:\/)(?<Value>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,34})$", RegexOptions.Compiled)
+            Tag("51", "Sending Institution",
+                new TagOption
+                {
+                    Letter = "A",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new[] {
+                                new Regex(@"^(?:\/)(?<Value>[A-Z]{1})$", RegexOptions.Compiled),
+                                new Regex(@"^(?:\/)(?<Value>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,34})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "Value" },
+                            Optional = true
                         },
-                        ValueNames = new[] { "Value" },
-                        Optional = true
-                    },
-                    new TagOptionRow {
-                        Regex = new[] {
-                            new Regex(@"^(?<IdentifierCode>[A-Z]{4}[A-Z]{2}[0-9A-Z]{2}(?:[0-9A-Z]{3}|))$", RegexOptions.Compiled)
+                        new TagOptionRow {
+                            Regex = new[] {
+                                new Regex(@"^(?<IdentifierCode>[A-Z]{4}[A-Z]{2}[0-9A-Z]{2}(?:[0-9A-Z]{3}|))$", RegexOptions.Compiled)
+
+                            },
+                            ValueNames = new[] { "IdentifierCode" }
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Letter = "D",
+                    Rows = new[] {
+                        new TagOptionRow
+                        {
+                            Regex = new [] { new Regex(@"^(?<PartyIdentifier>(\/[A-Z]{1,1})?(\/[A-Z0-9a-z\/\-?().,'+: ]{1,34})?)?$", RegexOptions.Compiled) },
+                            ValueNames = new [] { "PartyIdentifier" },
+                            Optional = true
                         },
-                        ValueNames = new[] { "IdentifierCode" }
+                        new TagOptionRow {
+                            Regex = new[] { new Regex(@"^(?<NameAddress>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35})$", RegexOptions.Compiled) },
+                            Lines = 4,
+                            ValueNames = new[] { "NameAddress" }
+                        }
                     }
                 }
-            });
+            );
             Tag("52", "Ordering Institution",
                 new TagOption
                 {
@@ -873,28 +1591,157 @@ namespace Swift
                             ValueNames = new[] { "Currency", "Value" }
                         }
                     }
-                });
-            Tag("72", "Sender to Receiver Information", new TagOption
-            {
-                //CounterPostfix = true,
-                Rows = new[] {
-                    new TagOptionRow {
-                        Regex = new [] { new Regex(@"^\/(?<Code>[0-9A-Z]{1,8})\/(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,32})?$", RegexOptions.Compiled) },
-                        ValueNames = new[] { "$,0.agg:Item:Code:Narrative" }
-                    },
-                    new TagOptionRow {
-                        Lines = 5,
-                        Regex = new [] {
-                            new Regex(@"^\/(?<Code>[0-9A-Z]{1,8})\/(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,32})?$", RegexOptions.Compiled),
-                            new Regex(@"^\/\/(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,33})$", RegexOptions.Compiled)
+                },
+                new TagOption
+                {
+                    Description = "Details of Charges",
+                    Letter = "B",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new []
+                            {
+                                new Regex(@"^\/(?<Code>[A-Z]{1,8})\/(?<Currency>[A-Z]{0,3})(?<Amount>[0-9,]{0,13})(?<Narrative>[A-Z0-9a-z\/\-?().,'+: ]{0,9})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Currency:Amount:Narrative" },
+                            Optional = true
                         },
-                        ValueNames = new[] { "$,0.agg:Item:Code:Narrative,1.agg.prev:Item:Narrative" }
-                        //$,0.agg:Item:Code:Narrative
-                        //$,0.agg:Item:Code:Narrative,1.agg.prev:Item:Narrative
-                        //"$Id:Value,1:Name,2:Address,3:CountryAndTown:Country:Town,4:DateOfBirth,5:PlaceOfBirth,6:CustomerIdNumber,7:NationalIdNumber,8:AdditionalInformation"
+                        new TagOptionRow {
+                            Lines = 5,
+                            Regex = new [] {
+                                new Regex(@"^\/(?<Code>[A-Z]{1,8})\/(?<Currency>[A-Z]{0,3})(?<Amount>[0-9,]{0,13})(?<Narrative>[A-Z0-9a-z\/\-?().,'+: ]{0,9})$", RegexOptions.Compiled),
+                                new Regex(@"^\/\/(?<Narrative>[A-Z0-9a-z\/\-?().,'+: ]{1,35})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Currency:Amount:Narrative,1.agg.prev:Item:Narrative" },
+                            Optional = true
+                        },
+                        new TagOptionRow {
+                            Lines = 6,
+                            Regex = new [] {
+                                new Regex(@"^(?<Narrative>[A-Z0-9a-z\/\-?().,'+: ]{1,35})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "Narrative" }
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Description = "Details of Charges",
+                    Letter = "N",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new []
+                            {
+                                new Regex(@"^(?<Code>APPL|BENE|OTHR)$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "Code" }
+                        },
+                        new TagOptionRow {
+                            Lines = 6,
+                            Regex = new [] {
+                                new Regex(@"(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,35})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "Narrative" },
+                            Optional = true
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Description = "Charges",
+                    Letter = "D",
+                    Rows = new[]
+                    {
+                        new TagOptionRow
+                        {
+                            Regex = new []
+                            {
+                                new Regex(@"^\/(?<Code>AGENT|COMM|CORCOM|DISC|INSUR|POST|STAMP|TELECHAR|WAREHOUS)\/(?<Currency>[A-Z]{3,3})(?<Amount>[0-9,]{1,13})(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,9})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Currency:Amount:Narrative" },
+                            Optional = true
+                        },
+                        new TagOptionRow {
+                            Lines = 5,
+                            Regex = new [] {
+                                new Regex(@"^\/(?<Code>AGENT|COMM|CORCOM|DISC|INSUR|POST|STAMP|TELECHAR|WAREHOUS)\/(?<Currency>[A-Z]{3,3})(?<Amount>[0-9,]{1,13})(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,9})$", RegexOptions.Compiled),
+                                new Regex(@"(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,35})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Currency:Amount:Narrative,1.agg.prev:Item:Narrative" },
+                            Optional = true
+                        },
+                        new TagOptionRow {
+                            Lines = 6,
+                            Regex = new [] {
+                                new Regex(@"(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!""%&*<>;{@#_ ]{1,35})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "Narrative" },
+                            Optional = true
+                        }
                     }
                 }
-            });
+            );
+            Tag("72", "Sender to Receiver Information",
+                new TagOption
+                {
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new [] { new Regex(@"^\/(?<Code>[0-9A-Z]{1,8})\/(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,32})?$", RegexOptions.Compiled) },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Narrative" },
+                            Optional = true
+                        },
+                        new TagOptionRow {
+                            Lines = 5,
+                            Regex = new [] {
+                                new Regex(@"^\/(?<Code>[0-9A-Z]{1,8})\/(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,32})?$", RegexOptions.Compiled),
+                                new Regex(@"^\/\/(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,33})$", RegexOptions.Compiled),
+                            },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Narrative,1.agg.prev:Item:Narrative" },
+                            Optional = true
+                        },
+                            new TagOptionRow
+                        {
+                            Lines = 6,
+                            Regex = new [] {
+                                new Regex(@"^(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new [] { "Narrative" }
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Letter = "Z",
+                    Rows = new[] {
+                        new TagOptionRow {
+                            Regex = new [] { new Regex(@"^\/(?<Code>[0-9A-Z]{1,8})\/(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,32})?$", RegexOptions.Compiled) },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Narrative" },
+                            Optional = true
+                        },
+                        new TagOptionRow {
+                            Lines = 5,
+                            Regex = new [] {
+                                new Regex(@"^\/(?<Code>[0-9A-Z]{1,8})\/(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,32})?$", RegexOptions.Compiled),
+                                new Regex(@"^(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new[] { "$,0.agg:Item:Code:Narrative,1.agg.prev:Item:Narrative" },
+                            Optional = true
+                        },
+                        new TagOptionRow
+                        {
+                            Lines = 6,
+                            Regex = new [] {
+                                new Regex(@"^(?<Narrative>[A-Za-z0-9\/\-\?\:\(\)\.,'\+ ]{1,35})$", RegexOptions.Compiled)
+                            },
+                            ValueNames = new [] { "Narrative" }
+                        }
+                    }
+                }
+            );
+
             Tag("77", "Regulatory Reporting",
                 new TagOption
                 {
@@ -916,7 +1763,142 @@ namespace Swift
                     Letter = "T",
                     Blob = true,
                     Description = "Envelope Contents"
+                },
+                new TagOption
+                {
+                    Letter = "C",
+                    Rows = new[] {
+                        new TagOptionRow
+                        {
+                            Lines = 150,
+                            Regex = new [] {
+                                new Regex(@"^(?<Narrative>[A-Z0-9a-z\/\-?().,'+: ]{1,65})$", RegexOptions.Compiled),
+                            },
+                            ValueNames = new[] { "Narrative" }
+                        }
+                    },
+                    Blob = true,
+                    Description = "Amendment Details"
                 });
+
+            Tag("78", "Instructions to the Paying/Accepting/Negotiating Bank",
+               new TagOption
+               {
+                   Letter = "",
+                   Rows = new[] {
+                        new TagOptionRow {
+                            Lines = 12,
+                            Regex = new[] { new Regex(@"^(?<Narrative>[A-Z0-9a-z\/\-?().,'+: ]{1,65})$", RegexOptions.Compiled) },
+                            ValueNames = new[] { "Narrative" }
+                        }
+                   }
+               }
+            );
+
+            Tag("79", "",
+                new TagOption
+                {
+                    Description = "Narrative",
+                    Letter = "",
+                    Rows = new[]
+                    {
+                        new TagOptionRow {
+                            Lines = 35,
+                            Regex = new Regex[] { new Regex(@"^(?<Narrative>[A-Z0-9a-z\/\-?().,'+: ]{1,50}$)", RegexOptions.Compiled) },
+                            ValueNames = new [] { "Narrative" }
+                        }
+                    }
+                },
+                new TagOption
+                {
+                    Description = "Narrative",
+                    Letter = "Z",
+                    Rows = new[]
+                    {
+                        new TagOptionRow {
+                            Lines = 35,
+                            Regex = new Regex[] { new Regex(@"^(?<Narrative>[A-Z0-9a-z\/\-?().,'+ =:!\""%&*<>;{@#_ ]{1,50}$)", RegexOptions.Compiled) },
+                            ValueNames = new [] { "Narrative" }
+                        }
+                    }
+                }
+            );
+            #region mt9xx
+            Message("900", new TagEnabled
+            {
+                Id = "20",
+                Letters = new[] { "" }
+            }, new TagEnabled
+            {
+                Id = "21",
+                Letters = new[] { "" }
+            }, new TagEnabled
+            {
+                Id = "25",
+                Letters = new[] { "", "P" }
+            }, new TagEnabled
+            {
+                Id = "13",
+                Letters = new[] { "D" },
+                Optional = true
+            }, new TagEnabled
+            {
+                Id = "32",
+                Letters = new[] { "A" }
+            }, new TagEnabled
+            {
+                Id = "52",
+                Letters = new[] { "A", "D" },
+                Optional = true
+            }, new TagEnabled
+            {
+                Id = "72",
+                Letters = new[] { "" },
+                Optional = true
+            });
+
+            Message("910", new TagEnabled
+            {
+                Id = "20",
+                Letters = new[] { "" }
+            }, new TagEnabled
+            {
+                Id = "21",
+                Letters = new[] { "" }
+            }, new TagEnabled
+            {
+                Id = "25",
+                Letters = new[] { "", "P" }
+            }, new TagEnabled
+            {
+                Id = "13",
+                Letters = new[] { "D" },
+                Optional = true
+            }, new TagEnabled
+            {
+                Id = "32",
+                Letters = new[] { "A" }
+            }, new TagEnabled
+            {
+                Id = "50",
+                Letters = new[] { "A", "F", "K" },
+                Optional = true
+            }, new TagEnabled
+            {
+                Id = "52",
+                Letters = new[] { "A", "D" },
+                Optional = true
+            }, new TagEnabled
+            {
+                Id = "56",
+                Letters = new[] { "A", "D" },
+                Optional = true
+            }, new TagEnabled
+            {
+                Id = "72",
+                Letters = new[] { "" },
+                Optional = true
+            });
 
             Message("950", new TagEnabled
             {
@@ -949,7 +1931,9 @@ namespace Swift
                 Letters = new[] { "" },
                 Optional = true
             });
+            #endregion
 
+            #region mt1xx or mt2xx
             Message("103", new TagEnabled
             {
                 Id = "20",
@@ -1421,6 +2405,188 @@ namespace Swift
                 Letters = new[] { "B" },
                 Optional = true
             });
+            #endregion
+
+            #region mt7xx
+
+            Message("760",
+                new TagEnabled() { Id = "27", Letters = new[] { "" } },
+                new TagEnabled() { Id = "20", Letters = new[] { "" } },
+                new TagEnabled() { Id = "23", Letters = new[] { "" } },
+                new TagEnabled() { Id = "30", Letters = new[] { "" }, Optional = true },
+                new TagEnabled() { Id = "40", Letters = new[] { "C" } },
+                new TagEnabled() { Id = "77", Letters = new[] { "C" } },
+                new TagEnabled() { Id = "72", Letters = new[] { "" }, Optional = true }
+            );
+
+            Message("767",
+                new TagEnabled() { Id = "27", Letters = new[] { "" } },
+                new TagEnabled() { Id = "20", Letters = new[] { "" } },
+                new TagEnabled() { Id = "21", Letters = new[] { "" } },
+                new TagEnabled() { Id = "23", Letters = new[] { "" } },
+                new TagEnabled() { Id = "30", Letters = new[] { "" }, Optional = true },
+                new TagEnabled() { Id = "26", Letters = new[] { "E" }, Optional = true },
+                new TagEnabled() { Id = "31", Letters = new[] { "C" } },
+                new TagEnabled() { Id = "77", Letters = new[] { "C" } },
+                new TagEnabled() { Id = "72", Letters = new[] { "" }, Optional = true }
+            );
+
+            Message("768",
+                new TagEnabled() { Id = "20", Letters = new[] { "" } },
+                new TagEnabled() { Id = "21", Letters = new[] { "" } },
+                new TagEnabled() { Id = "25", Letters = new[] { "" }, Optional = true },
+                new TagEnabled() { Id = "30", Letters = new[] { "" } },
+                new TagEnabled() { Id = "32", Letters = new[] { "B", "D" }, Optional = true },
+                new TagEnabled() { Id = "57", Letters = new[] { "A", "B", "D" }, Optional = true },
+                new TagEnabled() { Id = "71", Letters = new[] { "B" }, Optional = true },
+                new TagEnabled() { Id = "72", Letters = new[] { "" }, Optional = true }
+            );
+
+            Message("700",
+                new TagEnabled() { Id = "27", Letters = new[] { "" } },
+                new TagEnabled() { Id = "40", Letters = new[] { "A" } },
+                new TagEnabled() { Id = "20", Letters = new[] { "" } },
+                new TagEnabled() { Id = "23", Letters = new[] { "" }, Optional = true },
+                new TagEnabled() { Id = "31", Letters = new[] { "C" } },
+                new TagEnabled() { Id = "40", Letters = new[] { "E" } },
+                new TagEnabled() { Id = "31", Letters = new[] { "D" } },
+                new TagEnabled() { Id = "51", Letters = new[] { "A", "D" }, Optional = true },
+                new TagEnabled() { Id = "50", Letters = new[] { "" } },
+                new TagEnabled() { Id = "59", Letters = new[] { "" } },
+                new TagEnabled() { Id = "32", Letters = new[] { "B" } },
+                new TagEnabled() { Id = "39", Letters = new[] { "A" }, Optional = true },
+                new TagEnabled() { Id = "39", Letters = new[] { "C" }, Optional = true },
+                new TagEnabled() { Id = "41", Letters = new[] { "A", "D" } },
+                new TagEnabled() { Id = "42", Letters = new[] { "C" }, Optional = true },
+                new TagEnabled() { Id = "42", Letters = new[] { "A", "D" }, Optional = true },
+                new TagEnabled() { Id = "42", Letters = new[] { "M" }, Optional = true },
+                new TagEnabled() { Id = "42", Letters = new[] { "P" }, Optional = true },
+                new TagEnabled() { Id = "43", Letters = new[] { "P" }, Optional = true },
+                new TagEnabled() { Id = "43", Letters = new[] { "T" }, Optional = true },
+                new TagEnabled() { Id = "44", Letters = new[] { "A" }, Optional = true },
+                new TagEnabled() { Id = "44", Letters = new[] { "E" }, Optional = true },
+                new TagEnabled() { Id = "44", Letters = new[] { "F" }, Optional = true },
+                new TagEnabled() { Id = "44", Letters = new[] { "B" }, Optional = true },
+                new TagEnabled() { Id = "44", Letters = new[] { "C" }, Optional = true },
+                new TagEnabled() { Id = "44", Letters = new[] { "D" }, Optional = true },
+
+                new TagEnabled() { Id = "45", Letters = new[] { "A" }, Optional = true },
+                new TagEnabled() { Id = "46", Letters = new[] { "A" }, Optional = true },
+                new TagEnabled() { Id = "47", Letters = new[] { "A" }, Optional = true },
+                new TagEnabled() { Id = "49", Letters = new[] { "G" }, Optional = true },
+                new TagEnabled() { Id = "49", Letters = new[] { "H" }, Optional = true },
+
+
+                new TagEnabled() { Id = "71", Letters = new[] { "D" }, Optional = true },
+                new TagEnabled() { Id = "48", Letters = new[] { "" }, Optional = true },
+                new TagEnabled() { Id = "49", Letters = new[] { "" } },
+                new TagEnabled() { Id = "58", Letters = new[] { "A", "D" }, Optional = true },
+                new TagEnabled() { Id = "53", Letters = new[] { "A", "D" }, Optional = true },
+                new TagEnabled() { Id = "78", Letters = new[] { "" }, Optional = true },
+                new TagEnabled() { Id = "57", Letters = new[] { "A", "B", "D" }, Optional = true },
+                new TagEnabled() { Id = "72", Letters = new[] { "Z" }, Optional = true }
+            );
+
+            Message("701",
+                new TagEnabled() { Id = "27", Letters = new[] { "" } },
+                new TagEnabled() { Id = "20", Letters = new[] { "" } },
+                new TagEnabled() { Id = "45", Letters = new[] { "A" }, Optional = true },
+                new TagEnabled() { Id = "46", Letters = new[] { "A" }, Optional = true },
+                new TagEnabled() { Id = "47", Letters = new[] { "A" }, Optional = true },
+                new TagEnabled() { Id = "49", Letters = new[] { "G" }, Optional = true },
+                new TagEnabled() { Id = "49", Letters = new[] { "H" }, Optional = true }
+            );
+
+
+            Message("707",
+                new TagEnabled() { Id = "27", Letters = new[] { "" } },
+                new TagEnabled() { Id = "20", Letters = new[] { "" } },
+                new TagEnabled() { Id = "21", Letters = new[] { "" } },
+                new TagEnabled() { Id = "23", Letters = new[] { "" } },
+                new TagEnabled() { Id = "52", Letters = new[] { "A", "D" }, Optional = true },
+                new TagEnabled() { Id = "31", Letters = new[] { "C" } },
+                new TagEnabled() { Id = "26", Letters = new[] { "E" } },
+                new TagEnabled() { Id = "30", Letters = new[] { "" } },
+                new TagEnabled() { Id = "22", Letters = new[] { "A" } },
+                new TagEnabled() { Id = "23", Letters = new[] { "S" }, Optional = true },
+                new TagEnabled() { Id = "40", Letters = new[] { "A" }, Optional = true },
+                new TagEnabled() { Id = "40", Letters = new[] { "E" }, Optional = true },
+                new TagEnabled() { Id = "31", Letters = new[] { "D" }, Optional = true },
+                new TagEnabled() { Id = "50", Letters = new[] { "" }, Optional = true },
+                new TagEnabled() { Id = "59", Letters = new[] { "" }, Optional = true },
+                new TagEnabled() { Id = "32", Letters = new[] { "B" }, Optional = true },
+                new TagEnabled() { Id = "33", Letters = new[] { "B" }, Optional = true },
+                new TagEnabled() { Id = "39", Letters = new[] { "A" }, Optional = true },
+                new TagEnabled() { Id = "39", Letters = new[] { "C" }, Optional = true },
+                new TagEnabled() { Id = "41", Letters = new[] { "A", "D" }, Optional = true },
+                new TagEnabled() { Id = "42", Letters = new[] { "A", "D" }, Optional = true },
+                new TagEnabled() { Id = "42", Letters = new[] { "C" }, Optional = true },
+                new TagEnabled() { Id = "42", Letters = new[] { "M" }, Optional = true },
+                new TagEnabled() { Id = "42", Letters = new[] { "P" }, Optional = true },
+                new TagEnabled() { Id = "43", Letters = new[] { "P" }, Optional = true },
+                new TagEnabled() { Id = "43", Letters = new[] { "T" }, Optional = true },
+
+                new TagEnabled() { Id = "44", Letters = new[] { "A" }, Optional = true },
+                new TagEnabled() { Id = "44", Letters = new[] { "E" }, Optional = true },
+                new TagEnabled() { Id = "44", Letters = new[] { "F" }, Optional = true },
+                new TagEnabled() { Id = "44", Letters = new[] { "B" }, Optional = true },
+                new TagEnabled() { Id = "44", Letters = new[] { "C" }, Optional = true },
+                new TagEnabled() { Id = "44", Letters = new[] { "D" }, Optional = true },
+
+                new TagEnabled() { Id = "45", Letters = new[] { "B" }, Optional = true },
+                new TagEnabled() { Id = "46", Letters = new[] { "B" }, Optional = true },
+                new TagEnabled() { Id = "47", Letters = new[] { "B" }, Optional = true },
+                new TagEnabled() { Id = "49", Letters = new[] { "M" }, Optional = true },
+                new TagEnabled() { Id = "49", Letters = new[] { "N" }, Optional = true },
+
+                new TagEnabled() { Id = "71", Letters = new[] { "D" }, Optional = true },
+                new TagEnabled() { Id = "71", Letters = new[] { "N" }, Optional = true },
+
+                new TagEnabled() { Id = "48", Letters = new[] { "" }, Optional = true },
+                new TagEnabled() { Id = "49", Letters = new[] { "" }, Optional = true },
+
+                new TagEnabled() { Id = "58", Letters = new[] { "A", "D" }, Optional = true },
+                new TagEnabled() { Id = "53", Letters = new[] { "A", "D" }, Optional = true },
+
+                new TagEnabled() { Id = "78", Letters = new[] { "" }, Optional = true },
+
+                new TagEnabled() { Id = "57", Letters = new[] { "A", "B", "D" }, Optional = true },
+                new TagEnabled() { Id = "72", Letters = new[] { "Z" }, Optional = true }
+
+            );
+
+            Message("708",
+                new TagEnabled() { Id = "27", Letters = new[] { "" } },
+                new TagEnabled() { Id = "20", Letters = new[] { "" } },
+                new TagEnabled() { Id = "23", Letters = new[] { "" } },
+                new TagEnabled() { Id = "26", Letters = new[] { "E" } },
+                new TagEnabled() { Id = "30", Letters = new[] { "" } },
+
+                new TagEnabled() { Id = "45", Letters = new[] { "B" }, Optional = true },
+                new TagEnabled() { Id = "46", Letters = new[] { "B" }, Optional = true },
+                new TagEnabled() { Id = "47", Letters = new[] { "B" }, Optional = true },
+                new TagEnabled() { Id = "49", Letters = new[] { "M" }, Optional = true },
+                new TagEnabled() { Id = "49", Letters = new[] { "N" }, Optional = true }
+            );
+
+            Message("730",
+                new TagEnabled() { Id = "20", Letters = new[] { "" } },
+                new TagEnabled() { Id = "21", Letters = new[] { "" } },
+                new TagEnabled() { Id = "25", Letters = new[] { "" }, Optional = true },
+                new TagEnabled() { Id = "30", Letters = new[] { "" } },
+                new TagEnabled() { Id = "32", Letters = new[] { "B", "D" }, Optional = true },
+                new TagEnabled() { Id = "57", Letters = new[] { "A", "D" }, Optional = true },
+                new TagEnabled() { Id = "71", Letters = new[] { "D" }, Optional = true },
+                new TagEnabled() { Id = "72", Letters = new[] { "Z" }, Optional = true },
+                new TagEnabled() { Id = "79", Letters = new[] { "Z" }, Optional = true }
+            );
+
+            Message("799",
+                new TagEnabled() { Id = "20", Letters = new[] { "" } },
+                new TagEnabled() { Id = "21", Letters = new[] { "" }, Optional = true },
+                new TagEnabled() { Id = "79", Letters = new[] { "" } }
+            );
+            #endregion
         }
 
         static void Tag(string id, string description, params TagOption[] optios)

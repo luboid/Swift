@@ -142,7 +142,7 @@ namespace Swift
             }
 
             var tags = Factory.GetMessageFields(id);
-            if (null == id)
+            if (tags == null)
             {
                 throw new InvalidBlockException(raw, new InvalidBlock("UNKNOWN", new[] { raw })
                     .AddMessage(string.Format("Unsupported message {0}.", id)));
