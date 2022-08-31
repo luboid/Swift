@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,22 +29,13 @@ namespace Swift
             public Stack<Section> Stack = new Stack<Section>(3);
             public Stack<Section> Messages = new Stack<Section>(2);
 
-            public Section Pop(bool atEnd = false)
+            public Section Pop()
             {
-                if (atEnd)
-                {
-                    // searchBuffer.Length throw exception if buffer is not empty???
-                    // no close character for message to move it to stateReader.Messages
-                    if (Deep != 0)
-                    {
-                        throw new NotFullyEnededMessageException(Index);
-                    }
-                    return Stack.Count > 0 ? Stack.Pop() : null;
-                }
-                else
-                {
-                    return Messages.Count > 0 ? Messages.Pop() : null;
-                }
+#if NETFRAMEWORK
+                return Messages.Count > 0 ? Messages.Pop() : null;
+#else
+                return Messages.TryPop(out var sec) ? sec : null;
+#endif
             }
         }
 
@@ -76,7 +68,7 @@ namespace Swift
             }
 
             var buffer = new char[settings.BufferSize];
-            var read = 0; var searchIndex = 0;
+            int read, searchIndex;
             do
             {
                 read = await reader.ReadAsync(buffer, 0, buffer.Length);
@@ -107,8 +99,9 @@ namespace Swift
 
             } while (read != 0);
 
+            End();
 
-            return readerState.Pop(true);
+            return readerState.Pop();
         }
 
         public Section Read()
@@ -120,7 +113,7 @@ namespace Swift
             }
 
             var buffer = new char[settings.BufferSize];
-            var read = 0; var searchIndex = 0;
+            int read, searchIndex;
             do
             {
                 read = reader.Read(buffer, 0, buffer.Length);
@@ -149,8 +142,9 @@ namespace Swift
             }
             while (read != 0);
 
+            End();
 
-            return readerState.Pop(true);
+            return readerState.Pop();
         }
 
         int ReadBuffer()
@@ -170,7 +164,7 @@ namespace Swift
 
                 if (!readerState.Ongoing)
                 {
-                    if (readerState.SearchStart > settings.MaxCharactersToStart)
+                    if (settings.MaxCharactersToStart != 0 && readerState.SearchStart > settings.MaxCharactersToStart)
                     {
                         throw new CantFindMessageException(readerState.Pos);
                     }
@@ -211,9 +205,9 @@ namespace Swift
                         }
                     }
 
-                    if (buffer[i] == '{') //начало на секция
+                    if (buffer[i] == '{') // start new section
                     {
-                        ++readerState.Deep; // Някога проверка максиму 3
+                        ++readerState.Deep; // check section nesting
                         ++readerState.SecondOpen;
                         if (readerState.Deep > 2)
                         {
@@ -240,7 +234,9 @@ namespace Swift
                         readerState.Current = current;
 
                         if (readerState.Container.Sections.Count > settings.MaxSections)
+                        {
                             throw new TooManySectionsException(readerState.Index);
+                        }
                     }
                     else
                     {
@@ -269,6 +265,7 @@ namespace Swift
                                         throw new InvalidSectionTypeException(readerState.Index, readerState.Current.BlockId, readerState.Current.StartPos, readerState.Current.EndPos);
                                 }
                             }
+
                             readerState.Container.Append(buffer.ToString(currentPos, i - currentPos + 1));
                             readerState.Container.EndPos = readerState.Current.EndPos;
                             readerState.Current = readerState.Stack.Pop();
@@ -279,16 +276,7 @@ namespace Swift
                         {
                             if (buffer[i] == settings.End || buffer[i] == '$') // char with code 1 mark end of swift message
                             {
-                                readerState.Ongoing = buffer[i] == '$';// разделител м/у две съобщения
-                                readerState.SearchStart = 0;
-                                readerState.Container.EndPos = readerState.Pos - 1;
-                                readerState.Container.Index = ++readerState.Index;
-                                readerState.Messages.Push(readerState.Container);
-
-                                readerState.Container = null;
-                                readerState.Current = null;
-                                readerState.CurrentIndex = 0;
-                                readerState.Stack.Clear();
+                                End(buffer[i] == '$');// splitter between two messages
                                 currentPos = i + 1;
                                 find = true;
                             }
@@ -297,11 +285,12 @@ namespace Swift
                 }
                 else
                 {
-                    currentPos = i + 1;//ignore white space
+                    currentPos = i + 1; // ignore white space
                 }
 
-                ++readerState.Pos;//позиция в файла
+                ++readerState.Pos; // possition in the file
             }
+
             return find ? currentPos : -1;
         }
 
@@ -319,6 +308,31 @@ namespace Swift
         {
             if (this.readerOwher && null != this.reader)
                 this.reader.Dispose();
+        }
+
+        private void End(bool ongoing = false)
+        {
+            // searchBuffer.Length throw exception if buffer is not empty???
+            // no close character for message to move it to stateReader.Messages
+            if (readerState.Deep != 0)
+            {
+                throw new NotFullyEnededMessageException(readerState.Index);
+            }
+
+            readerState.Ongoing = ongoing;// splitter between two messages
+            readerState.SearchStart = 0;
+
+            if (readerState.Container != null)
+            {
+                readerState.Container.EndPos = readerState.Pos - 1;
+                readerState.Container.Index = ++readerState.Index;
+                readerState.Messages.Push(readerState.Container);
+                readerState.Container = null;
+            }
+
+            readerState.Current = null;
+            readerState.CurrentIndex = 0;
+            readerState.Stack.Clear();
         }
     }
 }

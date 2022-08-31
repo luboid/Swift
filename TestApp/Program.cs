@@ -26,11 +26,14 @@ namespace TestApp
         static void Process()
         {
             Swift.Section section;
-            using (var r = Swift.Reader.Create("examples\\MT103-72.txt"))
+            using (var r = Swift.Reader.Create("examples\\MT103-72-2.txt"))
             {
+                var i = 0;
                 while ((section = r.Read()) != null)
                 {
-                    Console.WriteLine("-".PadLeft(30, '-'));
+                    ++i;
+                    Console.WriteLine(i + " " + "-".PadLeft(30, '-'));
+
                     PrintSwift(section);
 
                     var m = GenericMessage.Create(section);
@@ -74,6 +77,7 @@ namespace TestApp
             {
                 Console.WriteLine(ex.Message);
             }
+
             Console.ReadLine();
         }
     }

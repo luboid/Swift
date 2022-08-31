@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{BD34C4FF-30A9-4E33-956F-90B10BAD66BE}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwiftReader", "SwiftReader\SwiftReader.csproj", "{D3ABCAC4-FF86-4DCA-9A08-4D15C8D20836}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{FD5BABBC-00C3-48DB-93C5-BEA4E34E3E57}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SwiftRegex", "SwiftRegex\SwiftRegex.csproj", "{E9570040-2FC2-4225-8990-4B4F9287A428}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,8 +31,15 @@ Global
 		{D3ABCAC4-FF86-4DCA-9A08-4D15C8D20836}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3ABCAC4-FF86-4DCA-9A08-4D15C8D20836}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3ABCAC4-FF86-4DCA-9A08-4D15C8D20836}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9570040-2FC2-4225-8990-4B4F9287A428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9570040-2FC2-4225-8990-4B4F9287A428}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9570040-2FC2-4225-8990-4B4F9287A428}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9570040-2FC2-4225-8990-4B4F9287A428}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C3EA1F6A-CB49-4B12-9EB7-113B91D3A1C9}
 	EndGlobalSection
 EndGlobal
